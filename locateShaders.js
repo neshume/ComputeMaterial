@@ -70,15 +70,7 @@ const computeShaders={
 
 
 
-
-
-const displayPaths = {
-    uniforms:  './displayTexture/uniforms.glsl',
-    main: './displayTexture/probability.glsl',
-};
-
-
-let displayUniforms={
+let matUniforms={
     res: {
         value: new THREE.Vector2(window.innerWidth,window.innerHeight)
     },
@@ -89,14 +81,28 @@ let displayUniforms={
 
 
 
+const matFragPaths = {
+    uniforms:  './material/common/uniforms.glsl',
+    main: './material/fragment/probability.glsl',
+};
+
+
+const matVertPaths = {
+    uniforms:  './material/common/uniforms.glsl',
+    position: './material/vertex/position.glsl',
+    normal: './material/vertex/normal.glsl',
+};
+
+
+
 const materialShaders={
     frag:{
-        paths:displayPaths,
-        uniforms:displayUniforms,
+        paths:matFragPaths,
+        uniforms:matUniforms,
     },
     vert:{
-        paths:{},
-        uniforms:{},
+        paths:matVertPaths,
+        uniforms:matUniforms,
     }
 }
 

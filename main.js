@@ -92,7 +92,7 @@ buildAllShaders().then((code)=>{
         depth: false,
         stencil: false
     });
-    renderer.outputEncoding = THREE.LinearEncoding;
+    //renderer.outputEncoding = THREE.LinearEncoding;
     renderer.setSize(window.innerWidth, window.innerHeight);
 
 
@@ -103,7 +103,7 @@ buildAllShaders().then((code)=>{
     iniCond=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.iniCondShader,computeUniforms);
 
     //make this one display resolution
-    displayScene=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.displayShader,displayUniforms);
+    displayScene=createComputeEnvironment(browserData.displayRes,browserData.dataType,code.matFragShader,displayUniforms);
 
 
 

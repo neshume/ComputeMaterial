@@ -73,12 +73,6 @@ async function loadShadersCSM(shaders, chunks) {
 
 async function buildAllShaders(){
 
-    // //build the compute shaders
-    // for(const key in computeShaders){
-    //     code.key = await assembleShaderCode(computeShaders[`${key}`].paths);
-    // }
-    // return code;
-
     let code={};
 
     //build the shaders for computation
@@ -87,7 +81,8 @@ async function buildAllShaders(){
     code.iniCondShader = await assembleShaderCode(computeShaders.iniCond.paths);
 
     //build the shaders for the material
-    code.displayShader = await assembleShaderCode(materialShaders.frag.paths);
+    code.matFragShader = await assembleShaderCode(materialShaders.frag.paths);
+    code.matVertShader = await assembleShaderCode(materialShaders.vert.paths);
 
     return code;
 }
