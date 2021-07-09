@@ -1,5 +1,8 @@
 import * as THREE from "./lib/three.module.js";
 
+import{browserData} from "./browserData.js";
+
+
 
 
 function createComputeScene(shaderCode, shaderUniforms){
@@ -23,20 +26,32 @@ function createComputeScene(shaderCode, shaderUniforms){
 
 
 
-function createComputeEnvironment(res, shaderCode, shaderUniforms){
+function createComputeEnvironment(res, dataType, shaderCode, shaderUniforms){
     //return an object containing all the info required to run a compute scene
     //the scene itself, the camera, two render targets
 
     let scene=createComputeScene(shaderCode,shaderUniforms);
 
     //make the render targets
-    let rt0=new THREE.WebGLRenderTarget(res[0],res[1],
-        {type: THREE.FloatType,
-                format: THREE.RGBAFormat});
+    let rt0=new THREE.WebGLRenderTarget(res[0],res[1],{
+                type: dataType,
+                format: THREE.RGBAFormat,
+                wrapS: THREE.ClampToEdgeWrapping,
+                wrapT: THREE.ClampToEdgeWrapping,
+                minFilter: THREE.NearestFilter,
+                magFilter: THREE.NearestFilter,
+                depthBuffer: false
+                });
 
-    let rt1=new THREE.WebGLRenderTarget(res[0],res[1],
-        {type: THREE.FloatType,
-            format: THREE.RGBAFormat});
+    let rt1=new THREE.WebGLRenderTarget(res[0],res[1], {
+            type: dataType,
+            format: THREE.RGBAFormat,
+            wrapS: THREE.ClampToEdgeWrapping,
+            wrapT: THREE.ClampToEdgeWrapping,
+            minFilter: THREE.NearestFilter,
+            magFilter: THREE.NearestFilter,
+            depthBuffer: false
+        });
 
 
     //return the computation environment

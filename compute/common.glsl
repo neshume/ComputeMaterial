@@ -8,7 +8,7 @@
 float dt,dx;
 
 void setTimeSteps(){
-    dx=1./res.y;
+    dx=1./max(res.x,res.y);
     dt=0.8*dx*dx;
 }
 
@@ -123,7 +123,7 @@ float[9] chooseStencil(ivec2 ij){
     //---THE FOUR CORNERS
     if(ij.x==1 && ij.y==1){
         //bottom left corner
-        return float[](
+        return float[9](
         0., 1., 1.,
         0., -3., 1.,
         0., 0., 0.
@@ -132,7 +132,7 @@ float[9] chooseStencil(ivec2 ij){
     }
     else if(ij.x==1 && y==1.){
         //top left corner
-        return float[](
+        return float[9](
         0., 0., 0.,
         0., -3., 1.,
         0., 1., 1.
@@ -141,7 +141,7 @@ float[9] chooseStencil(ivec2 ij){
 
     else if(x==1. && ij.y==1){
         //bottom right corner
-        return float[](
+        return float[9](
         1., 1., 0.,
         1., -3., 0.,
         0., 0., 0.
@@ -150,7 +150,7 @@ float[9] chooseStencil(ivec2 ij){
 
     else if(x==1. && y==1.){
         //top right corner
-        return float[](
+        return float[9](
         0.,  0., 0.,
         1., -3., 0.,
         1., 1., .0
@@ -160,7 +160,7 @@ float[9] chooseStencil(ivec2 ij){
     //---THE EDGES
     else if(ij.x==1){
         //the left edge
-        return float[](
+        return float[9](
         0., 0.5, 0.5,
         0., -3., 1.,
         0., 0.5, 0.5
@@ -169,7 +169,7 @@ float[9] chooseStencil(ivec2 ij){
 
     else if(x==1.){
         //the right edge
-        return float[](
+        return float[9](
         0.5, 0.5, 0.,
         1., -3., 0.,
         0.5, 0.5, 0.
@@ -178,7 +178,7 @@ float[9] chooseStencil(ivec2 ij){
 
     else if(ij.y==1){
         //the bottom edge
-        return float[](
+        return float[9](
         0.5, 1., 0.5,
         0.5, -1., 0.5,
         0., 0., 0.
@@ -187,7 +187,7 @@ float[9] chooseStencil(ivec2 ij){
 
     else if(y==1.){
         //the top edge
-        return float[](
+        return float[9](
         0., 0., 0.,
         0.5, -1., 0.5,
         0.5, 1., 0.5

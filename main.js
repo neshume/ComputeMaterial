@@ -1,9 +1,10 @@
 import * as THREE from "./lib/three.module.js";
 import {createComputeEnvironment, renderToScreen,doComputation} from "./computeEnvironment.js";
-import{buildAllShaders} from "./buildShaders.js";
+import{buildAllShaders} from "./loadShaders.js";
 import Stats from './lib/stats.module.js';
 
 
+import{browserData} from "./browserData.js";
 
 
 //set the computing resolution:
@@ -15,7 +16,7 @@ let computeRes=[1024,512];
 
 let computeUniforms={
     res: {
-        value: new THREE.Vector2(computeRes[0],computeRes[1])
+        value: new THREE.Vector2(browserData.computeRes[0],browserData.computeRes[1])
     },
     frameNumber: {
         value: 0
@@ -28,7 +29,7 @@ let computeUniforms={
 
 let displayUniforms={
     res: {
-        value: new THREE.Vector2(window.innerWidth,window.innerHeight)
+        value: new THREE.Vector2(browserData.displayRes[0],browserData.displayRes[1])
     },
     tex: {
         value: null
@@ -59,7 +60,9 @@ function animate(){
     doComputation(imgPart,renderer);
     updateComputeTexture(imgPart.tex);
 
-    renderToScreen(displayScene,renderer);
+    renderer.setRenderTarget(null);
+    renderer.render(displayScene.scene,displayScene.camera);
+    //renderToScreen(displayScene,renderer);
 
     realPart.material.uniforms.frameNumber.value+=1.;
     realPart.material.uniforms.frameNumber.value+=1.;
@@ -95,14 +98,12 @@ buildAllShaders().then((code)=>{
 
 
     //make compute environments for the computation
-    realPart=createComputeEnvironment(computeRes,code.realPartShader,computeUniforms);
-    imgPart=createComputeEnvironment(computeRes,code.imgPartShader,computeUniforms);
+    realPart=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.realPartShader,computeUniforms);
+    imgPart=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.imgPartShader,computeUniforms);
+    iniCond=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.iniCondShader,computeUniforms);
 
-
-    // don't actually need the render targets for the display scene but oh well!
-    //but make compute environments for the displays too
-    iniCond=createComputeEnvironment(computeRes,code.iniCondShader,computeUniforms)
-    displayScene=createComputeEnvironment([window.innerWidth, window.innerHeight],code.displayShader,displayUniforms);
+    //make this one display resolution
+    displayScene=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.displayShader,displayUniforms);
 
 
 
@@ -113,3 +114,4 @@ buildAllShaders().then((code)=>{
     //now with the initial condition set, run the animation loop
     animate();
 });
+
