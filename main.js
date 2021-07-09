@@ -172,7 +172,7 @@ buildAllShaders().then((code)=>{
 
 
     //build the main scene
-    scene=buildMainScene(code.matFragShader,materialShaders.frag.uniforms);
+    scene=buildMainScene(code.matVertShader,materialShaders.vert.uniforms);
 
     //run the initial condition shader first
     doComputation(iniCond,renderer);

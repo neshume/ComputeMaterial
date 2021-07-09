@@ -71,9 +71,9 @@ async function loadShadersCSM(shaders, chunks) {
     const _fetch = window.fetch;
     let _defines = "", _header = "", _main = "";
     if (shaders.defines)
-        _defines = await (await _fetch(shaders.defines)).text();
+        _defines = await (await _fetch(shaders.uniforms)).text();
     if (shaders.header)
-        _header = await (await _fetch(shaders.header)).text();
+        _header = await (await _fetch(shaders.geometry)).text();
     if (shaders.main)
         _main = await (await _fetch(shaders.main)).text();
     if (!chunks)
@@ -112,7 +112,7 @@ async function buildAllShaders(){
 
     //build the shaders for the material
     code.matFragShader = await assembleShaderCode(materialShaders.frag.paths);
-    code.matVertShader = await loadShadersCSM(materialShaders.vert.paths);
+    code.matVertShader = await loadShadersCSM(materialShaders.vert.paths,null);
 
     return code;
 }

@@ -1,4 +1,20 @@
 
+
+//=============================================
+//NEW POSITION OF VERTEX
+//=============================================
+
+vec3 newPos = displace(position);
+
+
+
+
+
+
+//=============================================
+//Computations for the normal vector
+//=============================================
+
 //requires a function vec3 displace(vec3) from position.glsl
 
 float offset = 0.01;
@@ -16,10 +32,8 @@ vec3 displacedBitangent = displacedNeighbour2 - newPos;
 
 
 
-
-
 //=============================================
-//NEW NORMAL VECTOR AT VERTEX
+//NEW NORMAL AT VERTEX
 //=============================================
 
 vec3 newNormal = normalize(cross(displacedTangent, displacedBitangent));
