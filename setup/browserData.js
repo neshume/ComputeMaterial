@@ -74,7 +74,7 @@ function isIOS() {
 
 let browserData={
     displayRes:[window.innerWidth,window.innerHeight],
-    computeRes:setComputeRes([700,700]),
+    computeRes:setComputeRes([window.innerWidth,window.innerHeight]),
     dataType: setDataType(),
 };
 

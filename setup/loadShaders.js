@@ -112,7 +112,6 @@ async function buildAllShaders(){
 
     //build the shaders for the material
     code.matFragShader = await assembleShaderCode(materialShaders.frag.paths);
-    code.matVertShader = await assembleShaderCode(materialShaders.vert.paths);
 
     return code;
 }

@@ -74,13 +74,6 @@ const matFragPaths = {
 };
 
 
-const matVertPaths = {
-    uniforms:  './material/common/uniforms.glsl',
-    position: './material/vertex/position.glsl',
-    normal: './material/vertex/normal.glsl',
-};
-
-
 
 
 
@@ -115,10 +108,6 @@ const computeShaders={
 const materialShaders={
     frag:{
         paths:matFragPaths,
-        uniforms:matUniforms,
-    },
-    vert:{
-        paths:matVertPaths,
         uniforms:matUniforms,
     }
 }
