@@ -39,14 +39,29 @@ import {CustomShaderMaterial,TYPES} from "./classes/three-csm.module.js";
 //=============================================
 
 
-function buildMainScene(){
+function buildMainScene(customMat){
 
     let scene = new THREE.Scene();
+
+
+    // normal light
+    let directionalLight = new THREE.DirectionalLight(0xffffff, 1.);
+    directionalLight.position.set(10, 10, 10);
+    //directionalLight.castShadow = true;
+    scene.add(directionalLight);
+
+    const light = new THREE.AmbientLight(0x404040); // soft white light
+    scene.add(light);
+
+    const dlight = new THREE.DirectionalLight(0xffffff);
+    dlight.position.set(5, 5, 5);
+    scene.add(dlight);
+
+
+
     let geometry = new THREE.PlaneBufferGeometry(30,30);
 
-    let material = new THREE.MeshBasicMaterial();
-
-    let mesh = new THREE.Mesh(geometry, material);
+    let mesh = new THREE.Mesh(geometry, customMat);
     mesh.name='plane';
     scene.add(mesh);
 

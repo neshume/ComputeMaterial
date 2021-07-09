@@ -78,9 +78,23 @@ function updateComputeTexture(tex){
 }
 
 
+function computeNextTimeStep(numIterates){
+    //do the computation numIterates of time steps
+    for(let i=0;i<numIterates;i++) {
+
+        doComputation(realPart, renderer);
+        updateComputeTexture(realPart.tex);
+
+        doComputation(imgPart, renderer);
+        updateComputeTexture(imgPart.tex);
+    }
+}
+
+
+
 //show the result of the computation
 function displayResultToScreen(is3D){
-    if(is3D){
+    if(is3D===true){
         //do another computation to get material texture
         doComputation(displayScene,renderer);
 
@@ -106,19 +120,11 @@ function animate(){
 
     requestAnimationFrame(animate);
 
-
-    let numIterates=ui.simulationSpeed;
-    for(let i=0;i<numIterates;i++) {
-
-        doComputation(realPart, renderer);
-        updateComputeTexture(realPart.tex);
-
-        doComputation(imgPart, renderer);
-        updateComputeTexture(imgPart.tex);
-    }
+    //do the computation evolving the wave function
+    computeNextTimeStep(ui.simulationSpeed);
 
     //now that the computation is done: decide how to draw it
-    displayResultToScreen(ui.threeDim);
+    displayResultToScreen(ui.is3D);
 
 
     //update compute uniforms
@@ -127,6 +133,7 @@ function animate(){
 
     //update material uniforms
     updateUIUniforms(displayScene.material);
+    updateUIUniforms(customMat);
 
     stats.end();
 }
@@ -183,34 +190,31 @@ buildAllShaders().then((code)=>{
         browserData.displayRes,browserData.dataType,code.matFragment,code.matUniforms
     );
 
-    //build the main scene
-
-    scene = new THREE.Scene();
-    customGeom = new THREE.PlaneBufferGeometry(30,30,100,100);
-
+    //build the custom material
     customMat = new CustomShaderMaterial({
-        baseMaterial: TYPES.BASIC,
+        baseMaterial: TYPES.PHYSICAL,
         vShader: code.matVertex,
         uniforms: code.matUniforms,
         passthrough: {
             wireframe: false,
-            metalness: 1,
-            roughness: false,
+            metalness: 0,
+            roughness: 0.2,
         },
     });
     //for some reason the constructor is not completing the uniforms correctly.
     //hard to know if its doing the material correctly either?!
     customMat.uniforms=code.matUniforms;
 
-    let mesh = new THREE.Mesh(customGeom,customMat);
-    mesh.name='plane';
-    scene.add(mesh);
+
+
+
+    //make the main scene using this material:
+    scene=buildMainScene(customMat);
 
 
     //run the initial condition shader first
     doComputation(iniCond,renderer);
     updateComputeTexture(iniCond.tex);
-
 
 
     //now with the initial condition set, run the animation loop
