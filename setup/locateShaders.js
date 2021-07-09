@@ -1,7 +1,7 @@
 // in this file we set up the pieces needed in the computation
 
 
-import * as THREE from "./lib/three.module.js";
+import * as THREE from "../lib/three.module.js";
 
 
 

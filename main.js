@@ -1,11 +1,11 @@
 import * as THREE from "./lib/three.module.js";
 import {createComputeEnvironment, renderToScreen,doComputation} from "./computeEnvironment.js";
-import{buildAllShaders} from "./loadShaders.js";
+
 import Stats from './lib/stats.module.js';
 
 
-import{browserData} from "./browserData.js";
-
+import{browserData} from "./setup/browserData.js";
+import{buildAllShaders} from "./setup/loadShaders.js";
 
 //set the computing resolution:
 let computeRes=[1024,512];

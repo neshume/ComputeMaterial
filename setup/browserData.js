@@ -1,7 +1,7 @@
 //This file sets things depending on the browser you are running
 //exports an object containing all the set properties
 
-import * as THREE from "./lib/three.module.js";
+import * as THREE from "../lib/three.module.js";
 
 
 /**

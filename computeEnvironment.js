@@ -1,6 +1,6 @@
 import * as THREE from "./lib/three.module.js";
 
-import{browserData} from "./browserData.js";
+import{browserData} from "./setup/browserData.js";
 
 
 
