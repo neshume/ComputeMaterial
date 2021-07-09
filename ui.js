@@ -46,6 +46,7 @@ let ui = {
     },
 
     simulationSpeed:5,
+    showPhase:false,
 };
 
 
@@ -61,7 +62,7 @@ function createUI() {
 
     mainMenu.add(ui, 'AboutThis').name("Help/About");
     mainMenu.add(ui,'simulationSpeed',1,10,1);
-
+    mainMenu.add(ui,'showPhase');
 
     mainMenu.close();
 }

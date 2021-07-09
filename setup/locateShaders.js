@@ -11,7 +11,7 @@ import * as THREE from "../lib/three.module.js";
 
 import {browserData} from "./browserData.js";
 
-
+import{ui} from "../ui.js";
 
 //=============================================
 //Internal Things Related to Compute Shaders
@@ -61,6 +61,9 @@ let matUniforms={
     res: {
         value: new THREE.Vector2(browserData.displayRes[0],browserData.displayRes[1])
     },
+    showPhase: {
+        value: ui.showPhase
+    },
     tex: {
         value: null
     },
@@ -70,7 +73,8 @@ let matUniforms={
 
 const matFragPaths = {
     uniforms:  './material/common/uniforms.glsl',
-    main: './material/fragment/phase.glsl',
+    aux: './material/fragment/aux.glsl',
+    main: './material/fragment/main.glsl',
 };
 
 

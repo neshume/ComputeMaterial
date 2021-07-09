@@ -43,6 +43,9 @@ import{
     camera
 } from "./scene.js";
 
+import{
+    updateUIUniforms
+} from "./setup/updateShaders.js";
 
 import{
     ui,
@@ -94,8 +97,12 @@ function animate(){
 
     renderToScreen(displayScene,renderer);
 
+    //update compute uniforms
     realPart.material.uniforms.frameNumber.value+=1.;
-    realPart.material.uniforms.frameNumber.value+=1.;
+    imgPart.material.uniforms.frameNumber.value+=1.;
+
+    //update material uniforms
+    updateUIUniforms(displayScene.material);
 
     stats.end();
 }
