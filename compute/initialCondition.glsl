@@ -34,7 +34,7 @@ vec2 initialCondition(ivec2 ij){
     //    vec2 psi0=2.*wavePacket(uv,30.,vec2(-0.4,0.1),3.*vec2(1,0));
     //    return psi0;
 
-    vec2 psi1=wavePacket(uv,10.,vec2(-0.3,-0.15),15.*vec2(1,0.3));
+    vec2 psi1=wavePacket(uv,10.,vec2(-0.3,0),15.*vec2(1,0));
     // vec2 psi2=wavePacket(uv,20.,vec2(0.4,0.4),2.*vec2(-1,-0.6));
     // vec2 psi3=wavePacket(uv,30.,vec2(0.0,0),-2.*vec2(1,0.1));
 

@@ -74,16 +74,17 @@ const computeShaders={
         paths:imgPartPaths,
         uniforms:computeUniforms
     },
+    iniCond:{
+        paths:initialConditionPaths,
+        uniforms:computeUniforms,
+    },
 };
 
 
 
 
 const displayShaders={
-    initialCondition:{
-        paths:initialConditionPaths,
-        uniforms:computeUniforms,
-    },
+
     displayTexture:{
         paths:displayPaths,
         uniforms:displayUniforms,

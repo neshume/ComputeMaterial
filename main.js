@@ -4,9 +4,18 @@ import{buildAllShaders} from "./buildShaders.js";
 import Stats from './lib/stats.module.js';
 
 
+
+
+//set the computing resolution:
+let computeRes=[1024,512];
+
+
+
+
+
 let computeUniforms={
     res: {
-        value: new THREE.Vector2(window.innerWidth,window.innerHeight)
+        value: new THREE.Vector2(computeRes[0],computeRes[1])
     },
     frameNumber: {
         value: 0
@@ -27,7 +36,8 @@ let displayUniforms={
 }
 
 
-let realPart,imgPart,displayScene,iniCond;
+let realPart,imgPart,iniCond;
+let displayScene;
 let renderer,stats;
 
 function updateComputeTexture(tex){
@@ -85,13 +95,13 @@ buildAllShaders().then((code)=>{
 
 
     //make compute environments for the computation
-    realPart=createComputeEnvironment([window.innerWidth, window.innerHeight],code.realPartShader,computeUniforms);
-    imgPart=createComputeEnvironment([window.innerWidth, window.innerHeight],code.imgPartShader,computeUniforms);
+    realPart=createComputeEnvironment(computeRes,code.realPartShader,computeUniforms);
+    imgPart=createComputeEnvironment(computeRes,code.imgPartShader,computeUniforms);
 
 
     // don't actually need the render targets for the display scene but oh well!
     //but make compute environments for the displays too
-    iniCond=createComputeEnvironment([window.innerWidth, window.innerHeight],code.iniCondShader,computeUniforms)
+    iniCond=createComputeEnvironment(computeRes,code.iniCondShader,computeUniforms)
     displayScene=createComputeEnvironment([window.innerWidth, window.innerHeight],code.displayShader,displayUniforms);
 
 
