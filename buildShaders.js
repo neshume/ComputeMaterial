@@ -1,3 +1,11 @@
+import * as THREE from "./lib/three.module.js";
+
+import{computeShaders,materialShaders} from "./locateShaders.js";
+
+
+
+
+
 
 async function assembleShaderCode(shaderPaths){
 
@@ -16,42 +24,30 @@ async function assembleShaderCode(shaderPaths){
 
 
 
+
+
+
+
+
 async function buildAllShaders(){
 
-    const realPartShaderPaths = {
-        uniforms:  './compute/uniforms.glsl',
-        common: './compute/common.glsl',
-        main: './compute/realPart.glsl',
-    };
+    // //build the compute shaders
+    // for(const key in computeShaders){
+    //     code.key = await assembleShaderCode(computeShaders[`${key}`].paths);
+    // }
+    // return code;
 
-    const imgPartShaderPaths = {
-        uniforms:  './compute/uniforms.glsl',
-        common: './compute/common.glsl',
-        main: './compute/imgPart.glsl',
-    };
+    let code={};
 
-    const iniCondShaderPaths = {
-        uniforms:  './compute/uniforms.glsl',
-        common: './compute/common.glsl',
-        main: './compute/initialCondition.glsl',
-    };
+    //build the shaders for computation
+    code.realPartShader = await assembleShaderCode(computeShaders.realPart.paths);
+    code.imgPartShader = await assembleShaderCode(computeShaders.imgPart.paths);
+    code.iniCondShader = await assembleShaderCode(computeShaders.iniCond.paths);
 
-    const displayShaderPaths = {
-        uniforms:  './displayTexture/uniforms.glsl',
-        main: './displayTexture/phase.glsl',
-    };
+    //build the shaders for the material
+    code.displayShader = await assembleShaderCode(materialShaders.frag.paths);
 
-    const realPartShaderText = await assembleShaderCode(realPartShaderPaths);
-    const imgPartShaderText = await assembleShaderCode(imgPartShaderPaths);
-    const iniCondShaderText = await assembleShaderCode(iniCondShaderPaths);
-    const displayShaderText = await assembleShaderCode(displayShaderPaths);
-
-    return {
-        iniCondShader: iniCondShaderText,
-        realPartShader: realPartShaderText,
-        imgPartShader: imgPartShaderText,
-        displayShader: displayShaderText,
-    };
+    return code;
 }
 
 export {buildAllShaders};

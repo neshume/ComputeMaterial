@@ -1,7 +1,7 @@
 // in this file we set up the pieces needed in the computation
 
 
-import * as THREE from "./lib/three.module";
+import * as THREE from "./lib/three.module.js";
 
 
 
@@ -91,8 +91,8 @@ let displayUniforms={
 
 const materialShaders={
     frag:{
-        paths:{},
-        uniforms:{},
+        paths:displayPaths,
+        uniforms:displayUniforms,
     },
     vert:{
         paths:{},
@@ -103,5 +103,6 @@ const materialShaders={
 
 
 export {
+    materialShaders,
     computeShaders,
 }
