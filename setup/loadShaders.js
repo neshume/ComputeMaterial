@@ -1,6 +1,22 @@
+//=============================================
+//Imports from lib/
+//=============================================
+
 import * as THREE from "../lib/three.module.js";
 
-import{computeShaders,materialShaders} from "./locateShaders.js";
+//=============================================
+//Imports from My Code
+//=============================================
+
+import{
+    computeShaders,
+    materialShaders
+} from "./locateShaders.js";
+
+
+//=============================================
+//Internal Things Defined in this File
+//=============================================
 
 /**
  * Builds a shader out of a set of input paths
@@ -22,6 +38,19 @@ async function assembleShaderCode(shaderPaths){
 
     return newShader;
 }
+
+
+
+
+
+
+
+
+
+
+//=============================================
+//Things to Export
+//=============================================
 
 
 /**
@@ -80,6 +109,7 @@ async function buildAllShaders(){
     code.imgPartShader = await assembleShaderCode(computeShaders.imgPart.paths);
     code.iniCondShader = await assembleShaderCode(computeShaders.iniCond.paths);
 
+
     //build the shaders for the material
     code.matFragShader = await assembleShaderCode(materialShaders.frag.paths);
     code.matVertShader = await assembleShaderCode(materialShaders.vert.paths);
@@ -87,4 +117,15 @@ async function buildAllShaders(){
     return code;
 }
 
-export {buildAllShaders};
+
+
+
+
+
+
+
+//=============================================
+//Doing the Exports
+//=============================================
+
+export {buildAllShaders,loadShadersCSM};

@@ -1,19 +1,25 @@
-// in this file we set up the pieces needed in the computation
 
+//=============================================
+//Imports from lib/
+//=============================================
 
 import * as THREE from "../lib/three.module.js";
 
+//=============================================
+//Imports from My Code
+//=============================================
+
+import {browserData} from "./browserData.js";
 
 
 
-
-
-
-
+//=============================================
+//Internal Things Related to Compute Shaders
+//=============================================
 
 let computeUniforms={
     res: {
-        value: new THREE.Vector2(window.innerWidth,window.innerHeight)
+        value: new THREE.Vector2(browserData.computeRes[0],browserData.computeRes[1])
     },
     frameNumber: {
         value: 0
@@ -44,6 +50,48 @@ const initialConditionPaths = {
 };
 
 
+
+
+
+//=============================================
+//Internal Things Related to Material Shaders
+//=============================================
+
+let matUniforms={
+    res: {
+        value: new THREE.Vector2(browserData.displayRes[0],browserData.displayRes[1])
+    },
+    tex: {
+        value: null
+    },
+};
+
+
+
+const matFragPaths = {
+    uniforms:  './material/common/uniforms.glsl',
+    main: './material/fragment/phase.glsl',
+};
+
+
+const matVertPaths = {
+    uniforms:  './material/common/uniforms.glsl',
+    position: './material/vertex/position.glsl',
+    normal: './material/vertex/normal.glsl',
+};
+
+
+
+
+
+
+
+
+
+//=============================================
+//Things to Export
+//=============================================
+
 const computeShaders={
     realPart:{
         paths:realPartPaths,
@@ -64,37 +112,6 @@ const computeShaders={
 
 
 
-
-
-
-
-
-
-let matUniforms={
-    res: {
-        value: new THREE.Vector2(window.innerWidth,window.innerHeight)
-    },
-    tex: {
-        value: null
-    },
-};
-
-
-
-const matFragPaths = {
-    uniforms:  './material/common/uniforms.glsl',
-    main: './material/fragment/probability.glsl',
-};
-
-
-const matVertPaths = {
-    uniforms:  './material/common/uniforms.glsl',
-    position: './material/vertex/position.glsl',
-    normal: './material/vertex/normal.glsl',
-};
-
-
-
 const materialShaders={
     frag:{
         paths:matFragPaths,
@@ -108,6 +125,12 @@ const materialShaders={
 
 
 
+
+
+
+//=============================================
+//Doing the Exports
+//=============================================
 export {
     materialShaders,
     computeShaders,

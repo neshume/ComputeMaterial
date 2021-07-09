@@ -1,49 +1,50 @@
+//=============================================
+//Imports from lib/
+//=============================================
+
 import * as THREE from "./lib/three.module.js";
 
 import Stats from './lib/stats.module.js';
 
 
+//=============================================
+//Imports from My Code
+//=============================================
+
+
 import{browserData} from "./setup/browserData.js";
+
+import{materialShaders,computeShaders} from "./setup/locateShaders.js";
+
 import{buildAllShaders} from "./setup/loadShaders.js";
 
-
-import {createComputeEnvironment, renderToScreen,doComputation} from "./classes/computeEnvironment.js";
-
-
-
-//set the computing resolution:
-let computeRes=[1024,512];
+import {
+    createComputeEnvironment,
+    renderToScreen,doComputation
+} from "./classes/computeEnvironment.js";
 
 
 
 
 
-let computeUniforms={
-    res: {
-        value: new THREE.Vector2(browserData.computeRes[0],browserData.computeRes[1])
-    },
-    frameNumber: {
-        value: 0
-    },
-    tex: {
-        value: null
-    },
-};
-
-
-let displayUniforms={
-    res: {
-        value: new THREE.Vector2(browserData.displayRes[0],browserData.displayRes[1])
-    },
-    tex: {
-        value: null
-    },
-}
-
+//=============================================
+//Global Variables Defined in this MAIN
+//=============================================
 
 let realPart,imgPart,iniCond;
 let displayScene;
 let renderer,stats;
+
+
+
+
+
+
+
+//=============================================
+//Functions used in Main Rendering Loop
+//=============================================
+
 
 function updateComputeTexture(tex){
     realPart.material.uniforms.tex.value=tex;
@@ -58,11 +59,16 @@ function animate(){
 
     requestAnimationFrame(animate);
 
-    doComputation(realPart,renderer);
-    updateComputeTexture(realPart.tex);
 
-    doComputation(imgPart,renderer);
-    updateComputeTexture(imgPart.tex);
+    let numIterates=5;
+    for(let i=0;i<numIterates;i++) {
+
+        doComputation(realPart, renderer);
+        updateComputeTexture(realPart.tex);
+
+        doComputation(imgPart, renderer);
+        updateComputeTexture(imgPart.tex);
+    }
 
     renderToScreen(displayScene,renderer);
 
@@ -73,13 +79,16 @@ function animate(){
 }
 
 
-//actually running everything
+
+
+//=============================================
+//Actually Running Things
+//=============================================
+
 
 buildAllShaders().then((code)=>{
 
    const canvas =document.querySelector('#c');
-
-
 
     var panelType = (typeof type !== 'undefined' && type) && (!isNaN(type)) ? parseInt(type) : 0;
      stats = new Stats();
@@ -97,16 +106,13 @@ buildAllShaders().then((code)=>{
     //renderer.outputEncoding = THREE.LinearEncoding;
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-
-
     //make compute environments for the computation
-    realPart=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.realPartShader,computeUniforms);
-    imgPart=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.imgPartShader,computeUniforms);
-    iniCond=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.iniCondShader,computeUniforms);
+    realPart=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.realPartShader,computeShaders.realPart.uniforms);
+    imgPart=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.imgPartShader,computeShaders.imgPart.uniforms);
+    iniCond=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.iniCondShader,computeShaders.iniCond.uniforms);
 
     //make this one display resolution
-    displayScene=createComputeEnvironment(browserData.displayRes,browserData.dataType,code.matFragShader,displayUniforms);
-
+    displayScene=createComputeEnvironment(browserData.displayRes,browserData.dataType,code.matFragShader,materialShaders.frag.uniforms);
 
 
     //run the initial condition shader first

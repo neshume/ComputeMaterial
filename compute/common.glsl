@@ -180,7 +180,7 @@ float[9] chooseStencil(ivec2 ij){
         //the bottom edge
         return float[9](
         0.5, 1., 0.5,
-        0.5, -1., 0.5,
+        0.5, -3., 0.5,
         0., 0., 0.
         );
     }
@@ -189,7 +189,7 @@ float[9] chooseStencil(ivec2 ij){
         //the top edge
         return float[9](
         0., 0., 0.,
-        0.5, -1., 0.5,
+        0.5, -3., 0.5,
         0.5, 1., 0.5
         );
     }

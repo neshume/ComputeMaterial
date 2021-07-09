@@ -1,8 +1,21 @@
+//=============================================
+//Imports from lib/
+//=============================================
+
 import * as THREE from "../lib/three.module.js";
 
-import{browserData} from "../setup/browserData.js";
+//=============================================
+//Imports from My Code
+//=============================================
+
+//NONE HERE
 
 
+
+
+//=============================================
+//Internal Things Defined in this File
+//=============================================
 
 
 function createComputeScene(shaderCode, shaderUniforms){
@@ -24,6 +37,26 @@ function createComputeScene(shaderCode, shaderUniforms){
     return scene;
 }
 
+
+
+function swapRTs(RT){
+    //annoying step that is required in using framebuffers for computation
+    //after writing, need to swap before you can read
+
+    let temp=RT[0];
+    RT[0]=RT[1];
+    RT[1]=temp;
+}
+
+
+
+
+
+
+
+//=============================================
+//Things to Export
+//=============================================
 
 
 function createComputeEnvironment(res, dataType, shaderCode, shaderUniforms){
@@ -88,14 +121,6 @@ function updateUniforms(compEnv){
 
 
 
-function swapRTs(RT){
-    //annoying step that is required in using framebuffers for computation
-    //after writing, need to swap before you can read
-
-    let temp=RT[0];
-    RT[0]=RT[1];
-    RT[1]=temp;
-}
 
 
 
@@ -122,6 +147,13 @@ function renderToScreen(compEnv,renderer){
 
 
 
+
+
+
+
+//=============================================
+//Doing the Exports
+//=============================================
 
 
 export{

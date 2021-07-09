@@ -1,12 +1,10 @@
 import * as THREE from "../lib/three.module.js";
 
-import{TYPES} from "../csm/three-csm.module.js";
-
-let computationWidth=1024;
-let computationHeight=512;
+import{TYPES} from "../classes/three-csm.module.js";
+import{browserData} from "../setup/browserData.js";
 
 
-import{ui} from "../ui.js";
+// import{ui} from "../ui.js";
 
 let properties={
     type: TYPES.PHYSICAL,
@@ -33,7 +31,7 @@ function updateComputeTexture(rendTarget){
 let vertexUniforms={
     //three_noise_seed: { value: 2 },
     time: {value: 0},
-    res: {value: new THREE.Vector2(computationWidth,computationHeight)},
+    res: {value: new THREE.Vector2(browserData.computeRes[0],browserData.computeRes[1])},
     rotx: {value: ui.rotx},
     roty: {value: ui.roty},
     rotu  : {value: ui.rotu},
@@ -47,7 +45,7 @@ let vertexUniforms={
 
 let fragmentUniforms={
     time: {value: 0},
-    res: {value: new THREE.Vector2(computationWidth,computationHeight)},
+    res: {value: new THREE.Vector2(browserData.computeRes[0],browserData.computeRes[1])},
     grid: {value: ui.grid},
     hue: {value: ui.hue},
     rotx: {value: ui.rotx},
