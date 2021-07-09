@@ -44,9 +44,10 @@ let ui = {
     AboutThis: function(){
         window.open('./about/about.html');
     },
-
+    threeDim:false,
     simulationSpeed:5,
     showPhase:false,
+
 };
 
 
@@ -63,6 +64,7 @@ function createUI() {
     mainMenu.add(ui, 'AboutThis').name("Help/About");
     mainMenu.add(ui,'simulationSpeed',1,10,1);
     mainMenu.add(ui,'showPhase');
+    mainMenu.add(ui,'threeDim',{'3D':true,"2D":false}).name('Style');
 
     mainMenu.close();
 }

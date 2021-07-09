@@ -9,8 +9,8 @@ import * as THREE from "../lib/three.module.js";
 //=============================================
 
 import{
-    computeShaders,
-    materialShaders
+    computeShaderData,
+    materialShaderData
 } from "./locateShaders.js";
 
 
@@ -71,9 +71,9 @@ async function loadShadersCSM(shaders, chunks) {
     const _fetch = window.fetch;
     let _defines = "", _header = "", _main = "";
     if (shaders.defines)
-        _defines = await (await _fetch(shaders.uniforms)).text();
+        _defines = await (await _fetch(shaders.defines)).text();
     if (shaders.header)
-        _header = await (await _fetch(shaders.geometry)).text();
+        _header = await (await _fetch(shaders.header)).text();
     if (shaders.main)
         _main = await (await _fetch(shaders.main)).text();
     if (!chunks)
@@ -105,14 +105,17 @@ async function buildAllShaders(){
     let code={};
 
     //build the shaders for computation
-    code.realPartShader = await assembleShaderCode(computeShaders.realPart.paths);
-    code.imgPartShader = await assembleShaderCode(computeShaders.imgPart.paths);
-    code.iniCondShader = await assembleShaderCode(computeShaders.iniCond.paths);
-
+    code.computeRealPart = await assembleShaderCode(computeShaderData.realPart);
+    code.computeImgPart = await assembleShaderCode(computeShaderData.imgPart);
+    code.computeIniCond = await assembleShaderCode(computeShaderData.iniCond);
 
     //build the shaders for the material
-    code.matFragShader = await assembleShaderCode(materialShaders.frag.paths);
-    code.matVertShader = await loadShadersCSM(materialShaders.vert.paths,null);
+    code.matFragment = await assembleShaderCode(materialShaderData.fragment);
+    code.matVertex = await loadShadersCSM(materialShaderData.vertex,null);
+
+    //include the uniforms
+    code.matUniforms=materialShaderData.uniforms;
+    code.computeUniforms=computeShaderData.uniforms;
 
     return code;
 }
@@ -128,4 +131,4 @@ async function buildAllShaders(){
 //Doing the Exports
 //=============================================
 
-export {buildAllShaders,loadShadersCSM};
+export {buildAllShaders};

@@ -17,8 +17,6 @@ import * as THREE from "./lib/three.module.js";
 //Imports from My Code
 //=============================================
 
-//NONE HERE
-import{materialShaders} from "./setup/locateShaders.js";
 import {CustomShaderMaterial,TYPES} from "./classes/three-csm.module.js";
 //=============================================
 //Internal Variables Defined in this File
@@ -40,29 +38,13 @@ import {CustomShaderMaterial,TYPES} from "./classes/three-csm.module.js";
 //Things to Export
 //=============================================
 
-function buildMainScene(vertexShader, uniformList){
 
-    const scene = new THREE.Scene();
-    const geometry = new THREE.PlaneBufferGeometry(30,30);
+function buildMainScene(){
 
-    const material = new CustomShaderMaterial({
-        baseMaterial:TYPES.PHYSICAL,
+    let scene = new THREE.Scene();
+    let geometry = new THREE.PlaneBufferGeometry(30,30);
 
-        //load the vertex shaders of the material
-        vShader: {
-            defines: vertexShader.defines,
-            header: vertexShader.header,
-            main: vertexShader.main,
-        },
-
-        //add in the uniforms of the material
-        uniforms: uniformList,
-
-        //other
-        passthrough: {
-            wireframe: false,
-        },
-    });
+    let material = new THREE.MeshBasicMaterial();
 
     let mesh = new THREE.Mesh(geometry, material);
     mesh.name='plane';
@@ -70,6 +52,7 @@ function buildMainScene(vertexShader, uniformList){
 
     return scene;
 }
+
 
 
 

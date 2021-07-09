@@ -83,9 +83,9 @@ const matFragPaths = {
 
 
 const matVertPaths = {
-    uniforms:  './material/common/uniforms.glsl',
-    position: './material/vertex/position.glsl',
-    normal: './material/vertex/normal.glsl',
+    defines:  './material/common/uniforms.glsl',
+    header: './material/vertex/geometry.glsl',
+    main: './material/vertex/main.glsl',
 };
 
 
@@ -100,35 +100,21 @@ const matVertPaths = {
 //Things to Export
 //=============================================
 
-const computeShaders={
-    realPart:{
-        paths:realPartPaths,
-        uniforms:computeUniforms,
-
-    },
-    imgPart: {
-        paths:imgPartPaths,
-        uniforms:computeUniforms
-    },
-    iniCond:{
-        paths:initialConditionPaths,
-        uniforms:computeUniforms,
-    },
+const computeShaderData={
+    uniforms:computeUniforms,
+    realPart:realPartPaths,
+    imgPart:imgPartPaths,
+    iniCond:initialConditionPaths,
 };
 
 
 
 
 
-const materialShaders={
-    frag:{
-        paths:matFragPaths,
-        uniforms:matUniforms,
-    },
-    vert:{
-        paths:matVertPaths,
-        uniforms:matUniforms,
-    }
+const materialShaderData={
+    uniforms:matUniforms,
+    fragment:matFragPaths,
+    vertex:matVertPaths,
 }
 
 
@@ -140,6 +126,6 @@ const materialShaders={
 //Doing the Exports
 //=============================================
 export {
-    materialShaders,
-    computeShaders,
+    materialShaderData,
+    computeShaderData,
 }

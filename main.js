@@ -27,11 +27,6 @@ import{
 } from "./setup/browserData.js";
 
 import{
-    materialShaders,
-    computeShaders
-} from "./setup/locateShaders.js";
-
-import{
     buildAllShaders
 } from "./setup/loadShaders.js";
 
@@ -53,6 +48,7 @@ import{
     ui,
     createUI
 } from './ui.js';
+import {CustomShaderMaterial, TYPES} from "./classes/three-csm.module.js";
 
 //=============================================
 //Global Variables Defined in this MAIN
@@ -63,9 +59,9 @@ let displayScene;
 let renderer,stats;
 let scene;
 let controls;
-
-
-
+let customMat;
+let customGeom;
+let standardMat;
 
 
 
@@ -78,7 +74,30 @@ function updateComputeTexture(tex){
     realPart.material.uniforms.tex.value=tex;
     imgPart.material.uniforms.tex.value=tex;
     displayScene.material.uniforms.tex.value=tex;
+    customMat.uniforms.tex.value=tex;
 }
+
+
+//show the result of the computation
+function displayResultToScreen(is3D){
+    if(is3D){
+        //do another computation to get material texture
+        doComputation(displayScene,renderer);
+
+        //update the material's texture map with this:
+        customMat.map=displayScene.tex;
+        //standardMat.map=displayScene.tex;
+
+        //now render this to the display
+        renderer.setRenderTarget(null);
+        renderer.render(scene,camera);
+    }
+    else{
+        //render material texture directly to the screen
+        renderToScreen(displayScene,renderer);
+    }
+}
+
 
 
 function animate(){
@@ -98,15 +117,9 @@ function animate(){
         updateComputeTexture(imgPart.tex);
     }
 
-    //use the result of the computation to render the texture.
-   doComputation(displayScene,renderer);
+    //now that the computation is done: decide how to draw it
+    displayResultToScreen(ui.threeDim);
 
-    //update the materials's texture map with this:
-    scene.getObjectByName( "plane" ).material.map=displayScene.tex;
-
-    //noww render this to the display
-    renderer.setRenderTarget(null);
-    renderer.render(scene,camera);
 
     //update compute uniforms
     realPart.material.uniforms.frameNumber.value+=1.;
@@ -154,25 +167,45 @@ buildAllShaders().then((code)=>{
 
     //make compute environments for the computation
     realPart=createComputeEnvironment(
-        browserData.computeRes,browserData.dataType,code.realPartShader,computeShaders.realPart.uniforms
+        browserData.computeRes,browserData.dataType,code.computeRealPart,code.computeUniforms
     );
 
     imgPart=createComputeEnvironment(
-        browserData.computeRes,browserData.dataType,code.imgPartShader,computeShaders.imgPart.uniforms
+        browserData.computeRes,browserData.dataType,code.computeImgPart,code.computeUniforms
     );
 
     iniCond=createComputeEnvironment(
-        browserData.computeRes,browserData.dataType,code.iniCondShader,computeShaders.iniCond.uniforms
+        browserData.computeRes,browserData.dataType,code.computeIniCond,code.computeUniforms
     );
 
     //make this one display resolution
     displayScene=createComputeEnvironment(
-        browserData.displayRes,browserData.dataType,code.matFragShader,materialShaders.frag.uniforms
+        browserData.displayRes,browserData.dataType,code.matFragment,code.matUniforms
     );
 
-
     //build the main scene
-    scene=buildMainScene(code.matVertShader,materialShaders.vert.uniforms);
+
+    scene = new THREE.Scene();
+    customGeom = new THREE.PlaneBufferGeometry(30,30,100,100);
+
+    customMat = new CustomShaderMaterial({
+        baseMaterial: TYPES.BASIC,
+        vShader: code.matVertex,
+        uniforms: code.matUniforms,
+        passthrough: {
+            wireframe: false,
+            metalness: 1,
+            roughness: false,
+        },
+    });
+    //for some reason the constructor is not completing the uniforms correctly.
+    //hard to know if its doing the material correctly either?!
+    customMat.uniforms=code.matUniforms;
+
+    let mesh = new THREE.Mesh(customGeom,customMat);
+    mesh.name='plane';
+    scene.add(mesh);
+
 
     //run the initial condition shader first
     doComputation(iniCond,renderer);
