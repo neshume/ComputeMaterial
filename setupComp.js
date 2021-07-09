@@ -25,17 +25,6 @@ let computeUniforms={
 
 
 
-let displayUniforms={
-    res: {
-        value: new THREE.Vector2(window.innerWidth,window.innerHeight)
-    },
-    tex: {
-        value: null
-    },
-};
-
-
-
 const realPartPaths = {
     uniforms:  './compute/uniforms.glsl',
     common: './compute/common.glsl',
@@ -48,20 +37,11 @@ const imgPartPaths = {
     main: './compute/imgPart.glsl',
 };
 
-const displayPaths = {
-    uniforms:  './displayTexture/uniforms.glsl',
-    main: './displayTexture/main.glsl',
-};
-
 const initialConditionPaths = {
     uniforms:  './compute/uniforms.glsl',
     common: './compute/common.glsl',
     main: './compute/initialCondition.glsl',
 };
-
-
-
-
 
 
 const computeShaders={
@@ -83,19 +63,45 @@ const computeShaders={
 
 
 
-const displayShaders={
 
-    displayTexture:{
-        paths:displayPaths,
-        uniforms:displayUniforms,
-    }
+
+
+
+
+
+
+
+
+const displayPaths = {
+    uniforms:  './displayTexture/uniforms.glsl',
+    main: './displayTexture/probability.glsl',
 };
 
 
+let displayUniforms={
+    res: {
+        value: new THREE.Vector2(window.innerWidth,window.innerHeight)
+    },
+    tex: {
+        value: null
+    },
+};
+
+
+
+const materialShaders={
+    frag:{
+        paths:{},
+        uniforms:{},
+    },
+    vert:{
+        paths:{},
+        uniforms:{},
+    }
+}
 
 
 
 export {
     computeShaders,
-    displayShaders,
 }

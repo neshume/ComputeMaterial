@@ -38,7 +38,7 @@ async function buildAllShaders(){
 
     const displayShaderPaths = {
         uniforms:  './displayTexture/uniforms.glsl',
-        main: './displayTexture/main.glsl',
+        main: './displayTexture/phase.glsl',
     };
 
     const realPartShaderText = await assembleShaderCode(realPartShaderPaths);
