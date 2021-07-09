@@ -34,19 +34,23 @@ let computeUniforms={
 const realPartPaths = {
     uniforms:  './compute/uniforms.glsl',
     common: './compute/common.glsl',
-    main: './compute/realPart.glsl',
+    laplacian: './compute/laplacian.glsl',
+    potentialEnergy: './compute/potentialEnergy.glsl',
+    realPart: './compute/realPart.glsl',
 };
 
 const imgPartPaths = {
     uniforms:  './compute/uniforms.glsl',
     common: './compute/common.glsl',
-    main: './compute/imgPart.glsl',
+    laplacian: './compute/laplacian.glsl',
+    potentialEnergy: './compute/potentialEnergy.glsl',
+    imgPart: './compute/imgPart.glsl',
 };
 
 const initialConditionPaths = {
     uniforms:  './compute/uniforms.glsl',
     common: './compute/common.glsl',
-    main: './compute/initialCondition.glsl',
+    iniCond: './compute/initialCondition.glsl',
 };
 
 

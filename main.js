@@ -80,7 +80,7 @@ function updateComputeTexture(tex){
 
 function animate(){
 
-    stats.begin();
+    //stats.begin();
 
     requestAnimationFrame(animate);
 
@@ -104,7 +104,7 @@ function animate(){
     //update material uniforms
     updateUIUniforms(displayScene.material);
 
-    stats.end();
+   // stats.end();
 }
 
 
@@ -119,10 +119,10 @@ buildAllShaders().then((code)=>{
 
    const canvas =document.querySelector('#c');
 
-    var panelType = (typeof type !== 'undefined' && type) && (!isNaN(type)) ? parseInt(type) : 0;
-     stats = new Stats();
-    stats.showPanel(panelType); // 0: fps, 1: ms, 2: mb, 3+: custom
-    document.body.appendChild(stats.dom);
+    // var panelType = (typeof type !== 'undefined' && type) && (!isNaN(type)) ? parseInt(type) : 0;
+    //  stats = new Stats();
+    // stats.showPanel(panelType); // 0: fps, 1: ms, 2: mb, 3+: custom
+    // document.body.appendChild(stats.dom);
 
 
     createUI();
