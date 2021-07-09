@@ -14,6 +14,8 @@ import * as THREE from "./lib/three.module.js";
 
 import Stats from './lib/stats.module.js';
 
+import{OrbitControls} from "./lib/OrbitControls.js";
+
 
 //=============================================
 //Imports from My Code
@@ -39,7 +41,7 @@ import {
 } from "./classes/computeEnvironment.js";
 
 import{
-    scene,
+   buildMainScene,
     camera
 } from "./scene.js";
 
@@ -59,7 +61,8 @@ import{
 let realPart,imgPart,iniCond;
 let displayScene;
 let renderer,stats;
-
+let scene;
+let controls;
 
 
 
@@ -80,7 +83,7 @@ function updateComputeTexture(tex){
 
 function animate(){
 
-    //stats.begin();
+    stats.begin();
 
     requestAnimationFrame(animate);
 
@@ -95,7 +98,15 @@ function animate(){
         updateComputeTexture(imgPart.tex);
     }
 
-    renderToScreen(displayScene,renderer);
+    //use the result of the computation to render the texture.
+   doComputation(displayScene,renderer);
+
+    //update the materials's texture map with this:
+    scene.getObjectByName( "plane" ).material.map=displayScene.tex;
+
+    //noww render this to the display
+    renderer.setRenderTarget(null);
+    renderer.render(scene,camera);
 
     //update compute uniforms
     realPart.material.uniforms.frameNumber.value+=1.;
@@ -104,7 +115,7 @@ function animate(){
     //update material uniforms
     updateUIUniforms(displayScene.material);
 
-   // stats.end();
+    stats.end();
 }
 
 
@@ -119,10 +130,10 @@ buildAllShaders().then((code)=>{
 
    const canvas =document.querySelector('#c');
 
-    // var panelType = (typeof type !== 'undefined' && type) && (!isNaN(type)) ? parseInt(type) : 0;
-    //  stats = new Stats();
-    // stats.showPanel(panelType); // 0: fps, 1: ms, 2: mb, 3+: custom
-    // document.body.appendChild(stats.dom);
+    var panelType = (typeof type !== 'undefined' && type) && (!isNaN(type)) ? parseInt(type) : 0;
+     stats = new Stats();
+    stats.showPanel(panelType); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild(stats.dom);
 
 
     createUI();
@@ -135,6 +146,11 @@ buildAllShaders().then((code)=>{
     });
     //renderer.outputEncoding = THREE.LinearEncoding;
     renderer.setSize(window.innerWidth, window.innerHeight);
+
+
+    controls = new OrbitControls(camera, renderer.domElement);
+
+
 
     //make compute environments for the computation
     realPart=createComputeEnvironment(
@@ -154,11 +170,16 @@ buildAllShaders().then((code)=>{
         browserData.displayRes,browserData.dataType,code.matFragShader,materialShaders.frag.uniforms
     );
 
+
+    //build the main scene
+    scene=buildMainScene(code.matFragShader,materialShaders.frag.uniforms);
+
     //run the initial condition shader first
     doComputation(iniCond,renderer);
     updateComputeTexture(iniCond.tex);
 
+
+
     //now with the initial condition set, run the animation loop
     animate();
 });
-

@@ -18,11 +18,7 @@ import * as THREE from "./lib/three.module.js";
 //=============================================
 
 //NONE HERE
-
-
-
-
-
+import{materialShaders} from "./setup/locateShaders.js";
 
 //=============================================
 //Internal Variables Defined in this File
@@ -44,12 +40,19 @@ import * as THREE from "./lib/three.module.js";
 //Things to Export
 //=============================================
 
-let scene=new THREE.Scene();
+function buildMainScene(shaderCode, shaderUniforms){
 
+    let scene = new THREE.Scene();
+    let geometry = new THREE.PlaneBufferGeometry(30,30);
 
+    let material = new THREE.MeshBasicMaterial();
 
+    let mesh = new THREE.Mesh(geometry, material);
+    mesh.name='plane';
+    scene.add(mesh);
 
-
+    return scene;
+}
 
 
 
@@ -71,6 +74,5 @@ camera.position.set(0, 0, 20);
 //=============================================
 
 export{
-    scene,
-    camera,
+    buildMainScene,camera
 };
