@@ -1,6 +1,4 @@
 
-
-
 async function assembleShaderCode(shaderPaths){
 
     let newShader='';
@@ -32,6 +30,12 @@ async function buildAllShaders(){
         main: './compute/imgPart.glsl',
     };
 
+    const iniCondShaderPaths = {
+        uniforms:  './compute/uniforms.glsl',
+        common: './compute/common.glsl',
+        main: './compute/initialCondition.glsl',
+    };
+
     const displayShaderPaths = {
         uniforms:  './displayTexture/uniforms.glsl',
         main: './displayTexture/main.glsl',
@@ -39,12 +43,14 @@ async function buildAllShaders(){
 
     const realPartShaderText = await assembleShaderCode(realPartShaderPaths);
     const imgPartShaderText = await assembleShaderCode(imgPartShaderPaths);
+    const iniCondShaderText = await assembleShaderCode(iniCondShaderPaths);
     const displayShaderText = await assembleShaderCode(displayShaderPaths);
 
     return {
-        realPartShader:realPartShaderText,
-        imgPartShader:imgPartShaderText,
-        displayShader:displayShaderText,
+        iniCondShader: iniCondShaderText,
+        realPartShader: realPartShaderText,
+        imgPartShader: imgPartShaderText,
+        displayShader: displayShaderText,
     };
 }
 

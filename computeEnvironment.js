@@ -2,11 +2,10 @@ import * as THREE from "./lib/three.module.js";
 
 
 
-
-
-
 function createComputeScene(shaderCode, shaderUniforms){
-    //make the scene
+    //given a shader, build a scene for computing its output
+    //a single full screen quad with shader material
+
     let scene = new THREE.Scene();
     let geometry = new THREE.PlaneBufferGeometry(2,2);
 
@@ -23,9 +22,10 @@ function createComputeScene(shaderCode, shaderUniforms){
 }
 
 
-//return an object containing all the info required to run a compute scene
-//the scene itself, the camera, two render targets
+
 function createComputeEnvironment(res, shaderCode, shaderUniforms){
+    //return an object containing all the info required to run a compute scene
+    //the scene itself, the camera, two render targets
 
     let scene=createComputeScene(shaderCode,shaderUniforms);
 
@@ -73,15 +73,19 @@ function updateUniforms(compEnv){
 
 
 
-
 function swapRTs(RT){
-    let temp=RT[0];
+    //annoying step that is required in using framebuffers for computation
+    //after writing, need to swap before you can read
 
+    let temp=RT[0];
     RT[0]=RT[1];
     RT[1]=temp;
 }
 
+
+
 function doComputation(compEnv,renderer){
+    //run the shader in compEnv, and store the result to compEnv.tex;
 
     //generate the texture
     renderer.setRenderTarget(compEnv.RT[0]);
@@ -95,6 +99,8 @@ function doComputation(compEnv,renderer){
 
 
 function renderToScreen(compEnv,renderer){
+    //render a computation environment to the screen
+
     renderer.setRenderTarget(null);
     renderer.render(compEnv.scene,compEnv.camera);
 }

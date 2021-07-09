@@ -320,48 +320,6 @@ float sdEllipse( vec2 p, in vec2 ab )
 
 
 
-//-------------------------------------------------
-//INITIAL CONDITION
-//before the third frame, what is happening?
-//-------------------------------------------------
-
-
-
-//this needs to be updated: its just the wavepacket at TIME ZERO
-//NEED HALF DT TIMESTEP
-vec2 wavePacket(vec2 uv, float scale, vec2 iniPos,vec2 iniMom){
-
-    vec2 relPos=scale*(uv-iniPos);
-
-    float mag=exp(-dot(relPos,relPos));
-    float phase=dot(relPos,iniMom);
-
-    return mag*vec2(cos(phase),sin(phase));
-}
-
-
-
-
-
-
-//this initial condition gives R(0) as first entry
-//and I(0.5dt) as the second entry
-vec2 initialCondition(ivec2 ij){
-
-    vec2 uv=toUV(ij);
-    vec2 psi0=2.*wavePacket(uv,30.,vec2(-0.4,0.1),3.*vec2(1,0));
-    return psi0;
-
-    //vec2 psi1=wavePacket(uv,10.,vec2(-0.3,-0.15),5.*vec2(1,0.3));
-    // vec2 psi2=wavePacket(uv,20.,vec2(0.4,0.4),2.*vec2(-1,-0.6));
-    // vec2 psi3=wavePacket(uv,30.,vec2(0.0,0),-2.*vec2(1,0.1));
-
-    //return psi1;
-    //return psi1+psi2+psi3;
-}
-
-
-
 
 
 //-------------------------------------------------
@@ -390,7 +348,7 @@ bool onEdge(ivec2 ij){
 
 
 bool inObstacle(ivec2 ij){
-    return false;
+   // return false;
 
     //        vec2 uv=toUV(ij);
     //        float thickness=0.02;
@@ -400,26 +358,26 @@ bool inObstacle(ivec2 ij){
     //        return d1<0.;
     //
 
-    //
-    //    vec2 uv=toUV(ij);
-    //
-    //    float thickness=0.01;
-    //
-    //    vec2 a1=vec2(0.2,0.1);
-    //    vec2 b1=vec2(0.2,0.5);
-    //    float d1=line_segment(uv,a1,b1)-thickness;
-    //
-    //    vec2 a2=vec2(0.2,-0.025);
-    //    vec2 b2=vec2(0.2,0.025);
-    //    float d2=line_segment(uv,a2,b2)-thickness;
-    //
-    //    vec2 a3=vec2(0.2,-0.1);
-    //    vec2 b3=vec2(0.2,-0.5);
-    //    float d3=line_segment(uv,a3,b3)-thickness;
-    //
-    //    return min(d1,min(d2,d3))<0.;
-    //
-    //
+
+        vec2 uv=toUV(ij);
+
+        float thickness=0.01;
+
+        vec2 a1=vec2(0.2,0.1);
+        vec2 b1=vec2(0.2,0.5);
+        float d1=line_segment(uv,a1,b1)-thickness;
+
+        vec2 a2=vec2(0.2,-0.025);
+        vec2 b2=vec2(0.2,0.025);
+        float d2=line_segment(uv,a2,b2)-thickness;
+
+        vec2 a3=vec2(0.2,-0.1);
+        vec2 b3=vec2(0.2,-0.5);
+        float d3=line_segment(uv,a3,b3)-thickness;
+
+        return min(d1,min(d2,d3))<0.;
+
+
 
 
     //    if(distance(uv,vec2(0.3,0.25))<0.1){
@@ -450,15 +408,11 @@ bool inObstacle(ivec2 ij){
 float PotentialE(ivec2 ij){
     vec2 uv=toUV(ij);
     //    return 100000.*(uv.x*uv.x+uv.y*uv.y);
-    float r=uv.x*uv.x+uv.y*uv.y;
-    //r=sqrt(abs(r));
-    r=r*r;
-    return max(-1000./r,-100000.);
-    //if(inObstacle(ij)){
-    //    return 100000.;
-    //}
+    if(inObstacle(ij)){
+        return 100000.;
+    }
     //we are in free space
-    // return 0.;
+     return 0.;
     //return 100.*(uv.x*uv.x+uv.y*uv.y);
 }
 

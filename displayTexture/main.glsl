@@ -11,10 +11,9 @@ vec3 hsb2rgb( in vec3 c ){
 
 
 
-
-
-    #define pal(x,c,d) abs(c*x+d)
-
+vec3 pal(float x, vec3 c, vec3 d){
+    return abs(c*x+d);
+}
 
 //can use the geometry.glsl file here if we want
 //can use geometry in here if we would like to!

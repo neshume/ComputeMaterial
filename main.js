@@ -1,6 +1,7 @@
 import * as THREE from "./lib/three.module.js";
 import {createComputeEnvironment, renderToScreen,doComputation} from "./computeEnvironment.js";
 import{buildAllShaders} from "./buildShaders.js";
+import Stats from './lib/stats.module.js';
 
 
 let computeUniforms={
@@ -26,8 +27,8 @@ let displayUniforms={
 }
 
 
-let realPart,imgPart,displayScene;
-let renderer;
+let realPart,imgPart,displayScene,iniCond;
+let renderer,stats;
 
 function updateComputeTexture(tex){
     realPart.material.uniforms.tex.value=tex;
@@ -37,6 +38,8 @@ function updateComputeTexture(tex){
 
 
 function animate(){
+
+    stats.begin();
 
     requestAnimationFrame(animate);
 
@@ -50,6 +53,8 @@ function animate(){
 
     realPart.material.uniforms.frameNumber.value+=1.;
     realPart.material.uniforms.frameNumber.value+=1.;
+
+    stats.end();
 }
 
 
@@ -58,6 +63,14 @@ function animate(){
 buildAllShaders().then((code)=>{
 
    const canvas =document.querySelector('#c');
+
+
+
+    var panelType = (typeof type !== 'undefined' && type) && (!isNaN(type)) ? parseInt(type) : 0;
+     stats = new Stats();
+
+    stats.showPanel(panelType); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild(stats.dom);
 
 
     renderer = new THREE.WebGLRenderer({
@@ -71,12 +84,22 @@ buildAllShaders().then((code)=>{
 
 
 
-    //make a compute environment
+    //make compute environments for the computation
     realPart=createComputeEnvironment([window.innerWidth, window.innerHeight],code.realPartShader,computeUniforms);
     imgPart=createComputeEnvironment([window.innerWidth, window.innerHeight],code.imgPartShader,computeUniforms);
 
-   // don't actually need the render targets for the display scene but oh well!
+
+    // don't actually need the render targets for the display scene but oh well!
+    //but make compute environments for the displays too
+    iniCond=createComputeEnvironment([window.innerWidth, window.innerHeight],code.iniCondShader,computeUniforms)
     displayScene=createComputeEnvironment([window.innerWidth, window.innerHeight],code.displayShader,displayUniforms);
 
+
+
+    //run the initial condition shader first
+    doComputation(iniCond,renderer);
+    updateComputeTexture(iniCond.tex);
+
+    //now with the initial condition set, run the animation loop
     animate();
 });
