@@ -1,11 +1,15 @@
 import * as THREE from "./lib/three.module.js";
-import {createComputeEnvironment, renderToScreen,doComputation} from "./computeEnvironment.js";
 
 import Stats from './lib/stats.module.js';
 
 
 import{browserData} from "./setup/browserData.js";
 import{buildAllShaders} from "./setup/loadShaders.js";
+
+
+import {createComputeEnvironment, renderToScreen,doComputation} from "./classes/computeEnvironment.js";
+
+
 
 //set the computing resolution:
 let computeRes=[1024,512];
@@ -60,9 +64,7 @@ function animate(){
     doComputation(imgPart,renderer);
     updateComputeTexture(imgPart.tex);
 
-    renderer.setRenderTarget(null);
-    renderer.render(displayScene.scene,displayScene.camera);
-    //renderToScreen(displayScene,renderer);
+    renderToScreen(displayScene,renderer);
 
     realPart.material.uniforms.frameNumber.value+=1.;
     realPart.material.uniforms.frameNumber.value+=1.;
