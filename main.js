@@ -1,4 +1,12 @@
 //=============================================
+//MAIN FILE
+//this file sets everything up, and runs the animation loop
+//=============================================
+
+
+
+
+//=============================================
 //Imports from lib/
 //=============================================
 
@@ -12,20 +20,34 @@ import Stats from './lib/stats.module.js';
 //=============================================
 
 
-import{browserData} from "./setup/browserData.js";
+import{
+    browserData
+} from "./setup/browserData.js";
 
-import{materialShaders,computeShaders} from "./setup/locateShaders.js";
+import{
+    materialShaders,
+    computeShaders
+} from "./setup/locateShaders.js";
 
-import{buildAllShaders} from "./setup/loadShaders.js";
+import{
+    buildAllShaders
+} from "./setup/loadShaders.js";
 
 import {
     createComputeEnvironment,
     renderToScreen,doComputation
 } from "./classes/computeEnvironment.js";
 
+import{
+    scene,
+    camera
+} from "./scene.js";
 
 
-
+import{
+    ui,
+    createUI
+} from './ui.js';
 
 //=============================================
 //Global Variables Defined in this MAIN
@@ -60,7 +82,7 @@ function animate(){
     requestAnimationFrame(animate);
 
 
-    let numIterates=5;
+    let numIterates=ui.simulationSpeed;
     for(let i=0;i<numIterates;i++) {
 
         doComputation(realPart, renderer);
@@ -92,10 +114,11 @@ buildAllShaders().then((code)=>{
 
     var panelType = (typeof type !== 'undefined' && type) && (!isNaN(type)) ? parseInt(type) : 0;
      stats = new Stats();
-
     stats.showPanel(panelType); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(stats.dom);
 
+
+    createUI();
 
     renderer = new THREE.WebGLRenderer({
         canvas,
@@ -107,13 +130,22 @@ buildAllShaders().then((code)=>{
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     //make compute environments for the computation
-    realPart=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.realPartShader,computeShaders.realPart.uniforms);
-    imgPart=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.imgPartShader,computeShaders.imgPart.uniforms);
-    iniCond=createComputeEnvironment(browserData.computeRes,browserData.dataType,code.iniCondShader,computeShaders.iniCond.uniforms);
+    realPart=createComputeEnvironment(
+        browserData.computeRes,browserData.dataType,code.realPartShader,computeShaders.realPart.uniforms
+    );
+
+    imgPart=createComputeEnvironment(
+        browserData.computeRes,browserData.dataType,code.imgPartShader,computeShaders.imgPart.uniforms
+    );
+
+    iniCond=createComputeEnvironment(
+        browserData.computeRes,browserData.dataType,code.iniCondShader,computeShaders.iniCond.uniforms
+    );
 
     //make this one display resolution
-    displayScene=createComputeEnvironment(browserData.displayRes,browserData.dataType,code.matFragShader,materialShaders.frag.uniforms);
-
+    displayScene=createComputeEnvironment(
+        browserData.displayRes,browserData.dataType,code.matFragShader,materialShaders.frag.uniforms
+    );
 
     //run the initial condition shader first
     doComputation(iniCond,renderer);

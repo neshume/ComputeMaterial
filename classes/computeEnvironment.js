@@ -1,4 +1,17 @@
 //=============================================
+//COMPUTE ENVIRONMENT
+//this file defines the an object to allow using fragment shaders for computation
+//input:shader code and its uniforms
+//output: Object Containing the following:
+//         Scene with single full screen quad, shader material
+//         Two render Targets
+//         Orthographic Camera
+//=============================================
+
+
+
+
+//=============================================
 //Imports from lib/
 //=============================================
 

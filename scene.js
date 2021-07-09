@@ -1,12 +1,17 @@
 //=============================================
+//THREE.JS SCENE
+//this file defines the scene we render
+//includes background lights, etc
+//main object: a custom shader material whose properties are set by the compute shaders
+//=============================================
+
+
+
+//=============================================
 //Imports from lib/
 //=============================================
 
-import {
-    GUI
-} from './lib/dat.gui.module.js';
-
-
+import * as THREE from "./lib/three.module.js";
 
 //=============================================
 //Imports from My Code
@@ -39,32 +44,22 @@ import {
 //Things to Export
 //=============================================
 
-let ui = {
-
-    AboutThis: function(){
-        window.open('./about/about.html');
-    },
-
-    simulationSpeed:5,
-};
+let scene=new THREE.Scene();
 
 
 
 
 
-function createUI() {
-
-    let mainMenu = new GUI();
-
-    mainMenu.width = 300;
-    mainMenu.domElement.style.userSelect = 'none';
-
-    mainMenu.add(ui, 'AboutThis').name("Help/About");
-    mainMenu.add(ui,'simulationSpeed',1,10,1);
 
 
-    mainMenu.close();
-}
+
+let camera=new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+);
+camera.position.set(0, 0, 20);
 
 
 
@@ -72,11 +67,10 @@ function createUI() {
 
 
 //=============================================
-//Exports from this file
+//Doing the Exports
 //=============================================
 
-
-export {
-    ui,
-    createUI
+export{
+    scene,
+    camera,
 };
