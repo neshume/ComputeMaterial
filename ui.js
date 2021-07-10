@@ -13,10 +13,7 @@ import {
 //=============================================
 
 //NONE HERE
-
-
-
-
+import{simulationData} from "./setup/simulationData.js";
 
 
 //=============================================
@@ -45,7 +42,7 @@ let ui = {
         window.open('./about/about.html');
     },
     is3D:true,
-    simulationSpeed:3,
+    simulationSpeed:simulationData.simSpeed,
     showPhase:false,
 
 };

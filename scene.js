@@ -51,11 +51,10 @@ function buildMainScene(customMat){
 
     let scene = new THREE.Scene();
     //
-    // // normal light
-    // let directionalLight = new THREE.DirectionalLight(0xffffff, 1.);
-    // directionalLight.position.set(10, 10, 10);
-    // //directionalLight.castShadow = true;
-    // scene.add(directionalLight);
+    // normal light
+    let directionalLight = new THREE.DirectionalLight(0xffffff, 1.);
+    directionalLight.position.set(10, 10, 10);
+    scene.add(directionalLight);
     //
     // const light = new THREE.AmbientLight(0x404040); // soft white light
     // scene.add(light);

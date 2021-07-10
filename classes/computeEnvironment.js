@@ -115,6 +115,47 @@ function createComputeEnvironment(res, dataType, shaderCode, shaderUniforms){
 
 
 
+//this is almost EXACTLY THE SAME FUNCTION AS ABOVE
+//and it can be used anywhere that one can
+//the only differences are the render target settings
+function createDisplayEnvironment(res, dataType, shaderCode, shaderUniforms){
+    //return an object containing all the info required to run a compute scene
+    //the scene itself, the camera, two render targets
+
+    let scene=createComputeScene(shaderCode,shaderUniforms);
+
+    //make the render targets
+    let rt0=new THREE.WebGLRenderTarget(res[0],res[1],{
+        type: dataType,
+        format: THREE.RGBAFormat,
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        depthBuffer: false
+    });
+
+    let rt1=new THREE.WebGLRenderTarget(res[0],res[1], {
+        type: dataType,
+        format: THREE.RGBAFormat,
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        depthBuffer: false
+    });
+
+
+    //return the computation environment
+    let compEnv = {
+        camera:new THREE.OrthographicCamera(
+            -1, 1, 1, -1, -1, 1,),
+        scene:scene,
+        RT:[rt0,rt1],
+        material: scene.getObjectByName( "plane" ).material,
+        tex:null,
+    };
+
+    return compEnv;
+}
+
+
 
 function updateUniforms(compEnv){
 
@@ -172,5 +213,6 @@ function renderToScreen(compEnv,renderer){
 export{
     renderToScreen,
     createComputeEnvironment,
+    createDisplayEnvironment,
     updateUniforms,
     doComputation};

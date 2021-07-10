@@ -53,7 +53,14 @@ function setDataType(){
 
 
 
-
+function setSimSpeed(){
+    if(isIOS()){
+        return 1;
+    }
+    else {
+        return 3;
+    }
+}
 
 
 
@@ -78,6 +85,7 @@ let simulationData={
     displayRes:[window.innerWidth,window.innerHeight],
     computeRes:setComputeRes([1024,512]),
     dataType: setDataType(),
+    simSpeed:setSimSpeed(),
 };
 
 

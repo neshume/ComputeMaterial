@@ -18,6 +18,8 @@ import{OrbitControls} from "./lib/OrbitControls.js";
 
 import {Sky} from "./lib/objects/Sky.js"
 
+import {Water} from "./lib/objects/Water.js"
+
 //=============================================
 //Imports from My Code
 //=============================================
@@ -33,6 +35,7 @@ import{
 
 import {
     createComputeEnvironment,
+    createDisplayEnvironment,
     renderToScreen,doComputation
 } from "./classes/computeEnvironment.js";
 
@@ -65,6 +68,7 @@ let customGeom;
 let standardMat;
 let sun;
 let pmremGenerator;
+let water;
 
 //=============================================
 //Functions used in Main Rendering Loop
@@ -95,7 +99,7 @@ function computeNextTimeStep(numIterates){
 
 //show the result of the computation
 function displayResultToScreen(is3D){
-    if(is3D===true){
+  //  if(is3D===true){
         //do another computation to get material texture
         doComputation(displayScene,renderer);
 
@@ -106,11 +110,11 @@ function displayResultToScreen(is3D){
         //now render this to the display
         renderer.setRenderTarget(null);
         renderer.render(scene,camera);
-    }
-    else{
-        //render material texture directly to the screen
-        renderToScreen(displayScene,renderer);
-    }
+  //  }
+    // else{
+    //     //render material texture directly to the screen
+    //     renderToScreen(displayScene,renderer);
+    // }
 }
 
 
@@ -142,72 +146,17 @@ function animate(){
 
 
 
-function createEnvScene() {
-
-    var envScene = new THREE.Scene();
-
-    var geometry = new THREE.BoxBufferGeometry();
-    geometry.deleteAttribute('uv');
-    var roomMaterial = new THREE.MeshStandardMaterial({
-        metalness: 0,
-        side: THREE.BackSide
-    });
-    var room = new THREE.Mesh(geometry, roomMaterial);
-    room.scale.setScalar(10);
-    envScene.add(room);
-
-    var mainLight = new THREE.PointLight(0xffffff, 30, 0, 2);
-    envScene.add(mainLight);
-
-    var lightMaterial = new THREE.MeshLambertMaterial({
-        color: 0x000000,
-        emissive: 0xffffff,
-        emissiveIntensity: 20
-    });
-
-    var light1 = new THREE.Mesh(geometry, lightMaterial);
-    light1.material.color.setHex(0xF52A5E);
-    light1.position.set(-5, 2, 0);
-    light1.scale.set(0.1, 1, 1);
-    envScene.add(light1);
-
-    var light2 = new THREE.Mesh(geometry, lightMaterial.clone());
-    light2.material.color.setHex(0xF5E836);
-    light2.position.set(5, 3, 0);
-    light2.scale.set(1, 0.1, 1);
-    envScene.add(light2);
-
-    var light3 = new THREE.Mesh(geometry, lightMaterial.clone());
-    light3.material.color.setHex(0x35C4F5);
-    light3.position.set(2, 1, 5);
-    light3.scale.set(1, 1, 0.1);
-    envScene.add(light3);
-
-
-
-
-
-    //===== now have generated the scene:
-    //build the cube map fom this:
-
-    var generatedCubeRenderTarget = pmremGenerator.fromScene(envScene, 0.04);
-
-
-    scene.background = generatedCubeRenderTarget.texture;
-
-    return generatedCubeRenderTarget.texture;
-
-}
-
-
 
 function skyBoxTex(){
     let bkgScene=new THREE.Scene();
+
+
     //add the sky and stuff to this scene
     sun = new THREE.Vector3();
+
     const sky = new Sky();
     sky.scale.setScalar( 4500000 );
-    bkgScene.add( sky );
+   bkgScene.add( sky );
 
     const skyUniforms = sky.material.uniforms;
 
@@ -216,14 +165,13 @@ function skyBoxTex(){
     skyUniforms[ 'mieCoefficient' ].value = 0.005;
     skyUniforms[ 'mieDirectionalG' ].value = 0.8;
 
-    const parameters = {
-        elevation: 2,
-        azimuth: 180
-    };
+    // const parameters = {
+    //     elevation: 2,
+    //     azimuth: 180
+    // };
 
-    const pmremGenerator = new THREE.PMREMGenerator( renderer );
+  //  const pmremGenerator = new THREE.PMREMGenerator( renderer );
 
-    //function updateSun() {
 
         const phi = THREE.MathUtils.degToRad( 85 );
         const theta = THREE.MathUtils.degToRad(50 );
@@ -231,13 +179,11 @@ function skyBoxTex(){
         sun.setFromSphericalCoords( 1, phi, theta );
 
         sky.material.uniforms[ 'sunPosition' ].value.copy( sun );
-        //water.material.uniforms[ 'sunDirection' ].value.copy( sun ).normalize();
+       // water.material.uniforms[ 'sunDirection' ].value.copy( sun ).normalize();
 
-        return pmremGenerator.fromScene( sky ).texture;
-
-   // }
-
-   // updateSun();
+        const lightMap=pmremGenerator.fromScene( sky ).texture;
+       // bkgScene.environment=lightMap;
+        return lightMap;
 
 }
 
@@ -291,8 +237,8 @@ buildAllShaders().then((code)=>{
         simulationData.computeRes,simulationData.dataType,code.computeIniCond,code.computeUniforms
     );
 
-    //make this one display resolution
-    displayScene=createComputeEnvironment(
+
+    displayScene=createDisplayEnvironment(
         simulationData.computeRes,simulationData.dataType,code.matFragment,code.matUniforms
     );
 
@@ -315,7 +261,7 @@ buildAllShaders().then((code)=>{
     //for some reason the constructor is not completing the uniforms correctly.
     //hard to know if its doing the material correctly either?!
     customMat.uniforms=code.matUniforms;
-    customMat.flatShading=false;
+   // customMat.flatShading=false;
 
 
 
