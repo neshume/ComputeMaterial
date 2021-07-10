@@ -20,7 +20,6 @@ vec3 probColor(vec2 wave, float prob){
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     //look up the texture coordinate at that point:
-    //THIS RELIES ON THE FACT THAT OUR SHADER TEXTURE AND COMPUTE TEXTURE IS THE SAME SIZE
     ivec2 ij = ivec2(fragCoord);
     vec2 wave=texelFetch(tex,ij,0).xy;
     float prob=texelFetch(tex,ij,0).z;

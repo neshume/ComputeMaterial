@@ -17,6 +17,7 @@ vec3 newPos = displace(position);
 
 //requires a function vec3 displace(vec3) from position.glsl
 
+
 float offset = 0.01;
 vec3 tangent = vec3(1,0,0);
 vec3 bitangent = vec3(0,1,0);

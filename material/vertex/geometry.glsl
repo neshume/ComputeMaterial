@@ -17,18 +17,15 @@ return ivec2(planeCoords);
 
 
 
-
-
-
 vec3 displace(vec3 params){
 
     //params is in [-1,1]:
     //because geometry is plane(2,2):
 
     //set up xy plane:
-    //this is a plane of half-height 1, and half-width resx/resy
-    float aspect =  res.x / res.y;
-    vec2 pos =  4.* vec2(aspect,1) * params.xy;
+    //this is a plane longest side length 10
+    float aspect =  res.y / res.x;
+    vec2 pos =  10.* vec2(1,aspect) * params.xy;
 
     //get the corresponding texel location
     ivec2 ij=getIJ(params.xy);
@@ -37,8 +34,8 @@ vec3 displace(vec3 params){
    float h=texelFetch(tex,ij,0).z;
     //float h=texture2D(tex,params.xy).z;
 
-    //offset plane in z direction by this probability
-    return vec3(pos,2.*h);
+    //offset plane in y direction by this probability
+    return vec3(-pos.x,2.*h,-pos.y);
 
 }
 

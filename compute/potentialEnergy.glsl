@@ -7,7 +7,7 @@
 
 
 bool inObstacle(ivec2 ij){
-    return false;
+  //  return false;
 
     //        vec2 uv=toUV(ij);
     //        float thickness=0.02;
@@ -17,25 +17,25 @@ bool inObstacle(ivec2 ij){
     //        return d1<0.;
     //
 
-    //
-    //        vec2 uv=toUV(ij);
-    //
-    //        float thickness=0.01;
-    //
-    //        vec2 a1=vec2(0.2,0.1);
-    //        vec2 b1=vec2(0.2,0.5);
-    //        float d1=line_segment(uv,a1,b1)-thickness;
-    //
-    //        vec2 a2=vec2(0.2,-0.025);
-    //        vec2 b2=vec2(0.2,0.025);
-    //        float d2=line_segment(uv,a2,b2)-thickness;
-    //
-    //        vec2 a3=vec2(0.2,-0.1);
-    //        vec2 b3=vec2(0.2,-0.5);
-    //        float d3=line_segment(uv,a3,b3)-thickness;
-    //
-    //        return min(d1,min(d2,d3))<0.;
-    //
+
+            vec2 uv=toUV(ij);
+
+            float thickness=0.01;
+
+            vec2 a1=vec2(0.2,0.1);
+            vec2 b1=vec2(0.2,0.5);
+            float d1=line_segment(uv,a1,b1)-thickness;
+
+            vec2 a2=vec2(0.2,-0.025);
+            vec2 b2=vec2(0.2,0.025);
+            float d2=line_segment(uv,a2,b2)-thickness;
+
+            vec2 a3=vec2(0.2,-0.1);
+            vec2 b3=vec2(0.2,-0.5);
+            float d3=line_segment(uv,a3,b3)-thickness;
+
+            return min(d1,min(d2,d3))<0.;
+
 
 
 

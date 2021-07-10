@@ -12,6 +12,8 @@
 //=============================================
 
 import * as THREE from "./lib/three.module.js";
+import {Sky} from "./lib/objects/Sky.js"
+import { Water } from './lib/objects/Water.js';
 
 //=============================================
 //Imports from My Code
@@ -41,24 +43,26 @@ import{
 //=============================================
 //Things to Export
 //=============================================
+let sun,sky;
+let water;
 
 
 function buildMainScene(customMat){
 
     let scene = new THREE.Scene();
-
-    // normal light
-    let directionalLight = new THREE.DirectionalLight(0xffffff, 1.);
-    directionalLight.position.set(10, 10, 10);
-    //directionalLight.castShadow = true;
-    scene.add(directionalLight);
-
-    const light = new THREE.AmbientLight(0x404040); // soft white light
-    scene.add(light);
-
-    const dlight = new THREE.DirectionalLight(0xffffff);
-    dlight.position.set(5, 5, 5);
-    scene.add(dlight);
+    //
+    // // normal light
+    // let directionalLight = new THREE.DirectionalLight(0xffffff, 1.);
+    // directionalLight.position.set(10, 10, 10);
+    // //directionalLight.castShadow = true;
+    // scene.add(directionalLight);
+    //
+    // const light = new THREE.AmbientLight(0x404040); // soft white light
+    // scene.add(light);
+    //
+    // const dlight = new THREE.DirectionalLight(0xffffff);
+    // dlight.position.set(5, 5, 5);
+    // scene.add(dlight);
 
 
     const resX=simulationData.computeRes[0];
@@ -81,7 +85,7 @@ let camera=new THREE.PerspectiveCamera(
     0.1,
     1000
 );
-camera.position.set(0, 0, 20);
+camera.position.set(0,3, 5);
 
 
 
