@@ -35,9 +35,10 @@ function setComputeRes(res){
         let newResY=Math.floor(ratio*res[1]);
         return [newResX,newResY];
     }
-
-    //otherwise, return the desired resolution
-    return res;
+else {
+        //otherwise, return the desired resolution
+        return res;
+    }
 }
 
 
@@ -46,7 +47,9 @@ function setDataType(){
     if(isIOS()){
         dataType=THREE.HalfFloatType;
     }
-    return dataType;
+    else {
+        return dataType;
+    }
 }
 
 
