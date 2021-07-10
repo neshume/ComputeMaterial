@@ -32,11 +32,6 @@ void compute( out vec4 fragColor, in ivec2 ij)
     //set the time steps for the simulation;
     setTimeSteps();
 
-//    if(frameNumber<4.){
-//        fragColor = vec4(initialCondition(ij),0,0);
-//        return;
-//    }
-
     if(onEdge(ij)){
         fragColor=vec4(0.,0,0,0);
         return;

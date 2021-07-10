@@ -63,7 +63,7 @@ function buildMainScene(customMat){
 
     const resX=simulationData.computeRes[0];
     const resY=simulationData.computeRes[1];
-    let geometry = new THREE.PlaneBufferGeometry(2,2,resX,resY);
+    let geometry = new THREE.PlaneBufferGeometry(1,1,resX,resY);
 
     let mesh = new THREE.Mesh(geometry, customMat);
     mesh.name='plane';

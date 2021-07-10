@@ -3,7 +3,7 @@
 
 bool onEdge(ivec2 ij){
     //are you on the edge of the screen?
-    if(ij.x==0||ij.y==0||ij.x==int(res.x-1.)||ij.y==int(res.y-1.)){
+    if(ij.x==1||ij.y==1||ij.x==int(res.x)||ij.y==int(res.y)){
         return true;
     }
     return false;

@@ -63,7 +63,7 @@ const initialConditionPaths = {
 
 let matUniforms={
     res: {
-        value: new THREE.Vector2(simulationData.displayRes[0],simulationData.displayRes[1])
+        value: new THREE.Vector2(simulationData.computeRes[0],simulationData.computeRes[1])
     },
     showPhase: {
         value: ui.showPhase

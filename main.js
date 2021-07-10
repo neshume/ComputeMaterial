@@ -187,7 +187,7 @@ buildAllShaders().then((code)=>{
 
     //make this one display resolution
     displayScene=createComputeEnvironment(
-        simulationData.displayRes,simulationData.dataType,code.matFragment,code.matUniforms
+        simulationData.computeRes,simulationData.dataType,code.matFragment,code.matUniforms
     );
 
     //build the custom material
