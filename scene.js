@@ -17,7 +17,11 @@ import * as THREE from "./lib/three.module.js";
 //Imports from My Code
 //=============================================
 
-import {CustomShaderMaterial,TYPES} from "./classes/three-csm.module.js";
+import{
+    browserData
+} from "./setup/browserData.js";
+
+
 //=============================================
 //Internal Variables Defined in this File
 //=============================================
@@ -43,7 +47,6 @@ function buildMainScene(customMat){
 
     let scene = new THREE.Scene();
 
-
     // normal light
     let directionalLight = new THREE.DirectionalLight(0xffffff, 1.);
     directionalLight.position.set(10, 10, 10);
@@ -58,8 +61,9 @@ function buildMainScene(customMat){
     scene.add(dlight);
 
 
-
-    let geometry = new THREE.PlaneBufferGeometry(30,30);
+    const resX=browserData.computeRes[0];
+    const resY=browserData.computeRes[1];
+    let geometry = new THREE.PlaneBufferGeometry(resX/resY,1.,resX,resY);
 
     let mesh = new THREE.Mesh(geometry, customMat);
     mesh.name='plane';
