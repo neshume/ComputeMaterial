@@ -225,8 +225,8 @@ function skyBoxTex(){
 
     //function updateSun() {
 
-        const phi = THREE.MathUtils.degToRad( 80 );
-        const theta = THREE.MathUtils.degToRad(30 );
+        const phi = THREE.MathUtils.degToRad( 85 );
+        const theta = THREE.MathUtils.degToRad(50 );
 
         sun.setFromSphericalCoords( 1, phi, theta );
 
@@ -306,7 +306,6 @@ buildAllShaders().then((code)=>{
         uniforms: code.matUniforms,
         passthrough: {
            side:THREE.DoubleSide,
-            flatShading:false,
             envMapIntensity:5.,
             wireframe: false,
             metalness: 0,
@@ -316,7 +315,7 @@ buildAllShaders().then((code)=>{
     //for some reason the constructor is not completing the uniforms correctly.
     //hard to know if its doing the material correctly either?!
     customMat.uniforms=code.matUniforms;
-
+    customMat.flatShading=false;
 
 
 

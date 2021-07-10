@@ -43,12 +43,11 @@ else {
 
 
 function setDataType(){
-    let dataType=THREE.FloatType;
     if(isIOS()){
-        dataType=THREE.HalfFloatType;
+        return THREE.HalfFloatType;
     }
     else {
-        return dataType;
+        return THREE.FloatType;
     }
 }
 

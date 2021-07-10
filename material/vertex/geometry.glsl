@@ -28,10 +28,12 @@ vec3 displace(vec3 params){
     vec2 pos =  10.* vec2(1,aspect) * params.xy;
 
     //get the corresponding texel location
-    ivec2 ij=getIJ(params.xy);
+   // ivec2 ij=getIJ(params.xy);
+    vec2 uv=params.xy+vec2(0.5);
 
     //access the probability for that pixel
-   float h=texelFetch(tex,ij,0).z;
+    float h=texture2D(tex,uv).z;
+   //float h=texelFetch(tex,ij,0).z;
     //float h=texture2D(tex,params.xy).z;
 
     //offset plane in y direction by this probability
