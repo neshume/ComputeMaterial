@@ -6,7 +6,7 @@ vec3 phaseColor(vec2 wave,float prob){
     float phase=atan(wave.y,wave.x)/(6.29);
     float intensity=atan(50.*prob);
     float saturation=0.6*intensity;
-    float lightness=0.3*intensity+0.05;
+    float lightness=0.2*intensity+0.02;
     vec3 col=2.*hsb2rgb(vec3(phase,saturation,lightness));
     return col;
 }
@@ -23,19 +23,13 @@ vec3 probColor(vec2 wave, float prob){
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     //look up the texture coordinate at that point:
-    vec2 uv=fragCoord/res;
-    vec4 data=texture2D(tex,uv);
-        vec2 wave=data.xy;
-        float prob=data.z;
-        float obs=data.w;
-
-//    ivec2 ij = ivec2(fragCoord);
-//    vec2 wave=texelFetch(tex,ij,0).xy;
-//    float prob=texelFetch(tex,ij,0).z;
-//    float obs=texelFetch(tex,ij,0).w;
+    ivec2 ij = ivec2(fragCoord);
+    vec2 wave=texelFetch(tex,ij,0).xy;
+    float prob=texelFetch(tex,ij,0).z;
+    float obs=texelFetch(tex,ij,0).w;
 
     if(obs!=0.){
-        fragColor=vec4(vec3(0.25),1);
+        fragColor=vec4(vec3(0.),1);
         return;
     }
 

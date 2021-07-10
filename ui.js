@@ -14,7 +14,7 @@ import {
 
 //NONE HERE
 import{simulationData} from "./setup/simulationData.js";
-
+import{setInitialCondition} from "./main.js";
 
 //=============================================
 //Internal Variables Defined in this File
@@ -44,7 +44,8 @@ let ui = {
     is3D:true,
     simulationSpeed:simulationData.simSpeed,
     showPhase:false,
-
+    potentialType:2,
+    momentum:0.5,
 };
 
 
@@ -59,9 +60,22 @@ function createUI() {
     mainMenu.domElement.style.userSelect = 'none';
 
     mainMenu.add(ui, 'AboutThis').name("Help/About");
+    let mom= mainMenu.add(ui,'momentum',0,1,0.01);
     mainMenu.add(ui,'simulationSpeed',1,10,1);
     mainMenu.add(ui,'showPhase');
+    let pot = mainMenu.add(ui,'potentialType', {
+            'ParticleBox':1,
+            'DoubleSlit':2,
+            'PotentialBarrier':3,
+            'EllipticalBilliards':4,
+        }
+        ).name('Style');
+
+    pot.onChange(setInitialCondition);
     // mainMenu.add(ui,'is3D',{'3D':true,"2D":false}).name('Style');
+
+    mom.onChange(setInitialCondition);
+
 
     mainMenu.close();
 }

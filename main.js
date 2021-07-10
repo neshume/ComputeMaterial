@@ -74,6 +74,13 @@ let water;
 //Functions used in Main Rendering Loop
 //=============================================
 
+function setInitialCondition(){
+    iniCond.material.uniforms.momentum.value=ui.momentum;
+    //run the initial condition shader first
+    doComputation(iniCond,renderer);
+    updateComputeTexture(iniCond.tex);
+}
+
 
 function updateComputeTexture(tex){
     realPart.material.uniforms.tex.value=tex;
@@ -134,11 +141,19 @@ function animate(){
 
     //update compute uniforms
     realPart.material.uniforms.frameNumber.value+=1.;
+    realPart.material.uniforms.potentialType.value=ui.potentialType;
+
+
     imgPart.material.uniforms.frameNumber.value+=1.;
+    imgPart.material.uniforms.potentialType.value=ui.potentialType;
+
+
+
 
     //update material uniforms
     updateUIUniforms(displayScene.material);
     updateUIUniforms(customMat);
+
 
     stats.end();
 }
@@ -149,7 +164,6 @@ function animate(){
 
 function skyBoxTex(){
     let bkgScene=new THREE.Scene();
-
 
     //add the sky and stuff to this scene
     sun = new THREE.Vector3();
@@ -165,21 +179,12 @@ function skyBoxTex(){
     skyUniforms[ 'mieCoefficient' ].value = 0.005;
     skyUniforms[ 'mieDirectionalG' ].value = 0.8;
 
-    // const parameters = {
-    //     elevation: 2,
-    //     azimuth: 180
-    // };
-
-  //  const pmremGenerator = new THREE.PMREMGenerator( renderer );
-
-
-        const phi = THREE.MathUtils.degToRad( 85 );
-        const theta = THREE.MathUtils.degToRad(50 );
+        const phi = THREE.MathUtils.degToRad( 83 );
+        const theta = THREE.MathUtils.degToRad(200 );
 
         sun.setFromSphericalCoords( 1, phi, theta );
 
         sky.material.uniforms[ 'sunPosition' ].value.copy( sun );
-       // water.material.uniforms[ 'sunDirection' ].value.copy( sun ).normalize();
 
         const lightMap=pmremGenerator.fromScene( sky ).texture;
        // bkgScene.environment=lightMap;
@@ -222,8 +227,6 @@ buildAllShaders().then((code)=>{
 
     controls = new OrbitControls(camera, renderer.domElement);
 
-
-
     //make compute environments for the computation
     realPart=createComputeEnvironment(
         simulationData.computeRes,simulationData.dataType,code.computeRealPart,code.computeUniforms
@@ -251,7 +254,7 @@ buildAllShaders().then((code)=>{
         vShader: code.matVertex,
         uniforms: code.matUniforms,
         passthrough: {
-           side:THREE.DoubleSide,
+            side:THREE.DoubleSide,
             envMapIntensity:5.,
             wireframe: false,
             metalness: 0,
@@ -261,8 +264,6 @@ buildAllShaders().then((code)=>{
     //for some reason the constructor is not completing the uniforms correctly.
     //hard to know if its doing the material correctly either?!
     customMat.uniforms=code.matUniforms;
-   // customMat.flatShading=false;
-
 
 
     //make the main scene using this material:
@@ -284,3 +285,4 @@ buildAllShaders().then((code)=>{
     animate();
 });
 
+export{setInitialCondition};

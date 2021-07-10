@@ -27,6 +27,12 @@ let computeUniforms={
     tex: {
         value: null
     },
+    potentialType:{
+        value: ui.potentialType
+    },
+    momentum:{
+        value:ui.momentum
+    }
 };
 
 
