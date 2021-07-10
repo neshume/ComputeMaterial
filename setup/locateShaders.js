@@ -9,7 +9,7 @@ import * as THREE from "../lib/three.module.js";
 //Imports from My Code
 //=============================================
 
-import {browserData} from "./browserData.js";
+import {simulationData} from "./simulationData.js";
 
 import{ui} from "../ui.js";
 
@@ -19,7 +19,7 @@ import{ui} from "../ui.js";
 
 let computeUniforms={
     res: {
-        value: new THREE.Vector2(browserData.computeRes[0],browserData.computeRes[1])
+        value: new THREE.Vector2(simulationData.computeRes[0],simulationData.computeRes[1])
     },
     frameNumber: {
         value: 0
@@ -63,7 +63,7 @@ const initialConditionPaths = {
 
 let matUniforms={
     res: {
-        value: new THREE.Vector2(browserData.displayRes[0],browserData.displayRes[1])
+        value: new THREE.Vector2(simulationData.displayRes[0],simulationData.displayRes[1])
     },
     showPhase: {
         value: ui.showPhase

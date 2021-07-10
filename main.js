@@ -23,8 +23,8 @@ import{OrbitControls} from "./lib/OrbitControls.js";
 
 
 import{
-    browserData
-} from "./setup/browserData.js";
+    simulationData
+} from "./setup/simulationData.js";
 
 import{
     buildAllShaders
@@ -174,20 +174,20 @@ buildAllShaders().then((code)=>{
 
     //make compute environments for the computation
     realPart=createComputeEnvironment(
-        browserData.computeRes,browserData.dataType,code.computeRealPart,code.computeUniforms
+        simulationData.computeRes,simulationData.dataType,code.computeRealPart,code.computeUniforms
     );
 
     imgPart=createComputeEnvironment(
-        browserData.computeRes,browserData.dataType,code.computeImgPart,code.computeUniforms
+        simulationData.computeRes,simulationData.dataType,code.computeImgPart,code.computeUniforms
     );
 
     iniCond=createComputeEnvironment(
-        browserData.computeRes,browserData.dataType,code.computeIniCond,code.computeUniforms
+        simulationData.computeRes,simulationData.dataType,code.computeIniCond,code.computeUniforms
     );
 
     //make this one display resolution
     displayScene=createComputeEnvironment(
-        browserData.displayRes,browserData.dataType,code.matFragment,code.matUniforms
+        simulationData.displayRes,simulationData.dataType,code.matFragment,code.matUniforms
     );
 
     //build the custom material

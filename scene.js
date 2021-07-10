@@ -18,8 +18,8 @@ import * as THREE from "./lib/three.module.js";
 //=============================================
 
 import{
-    browserData
-} from "./setup/browserData.js";
+    simulationData
+} from "./setup/simulationData.js";
 
 
 //=============================================
@@ -61,9 +61,9 @@ function buildMainScene(customMat){
     scene.add(dlight);
 
 
-    const resX=browserData.computeRes[0];
-    const resY=browserData.computeRes[1];
-    let geometry = new THREE.PlaneBufferGeometry(resX/resY,1.,resX,resY);
+    const resX=simulationData.computeRes[0];
+    const resY=simulationData.computeRes[1];
+    let geometry = new THREE.PlaneBufferGeometry(2,2,resX,resY);
 
     let mesh = new THREE.Mesh(geometry, customMat);
     mesh.name='plane';

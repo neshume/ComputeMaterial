@@ -72,9 +72,9 @@ function isIOS() {
 
 
 
-let browserData={
+let simulationData={
     displayRes:[window.innerWidth,window.innerHeight],
-    computeRes:setComputeRes([700,700]),
+    computeRes:setComputeRes([512,256]),
     dataType: setDataType(),
 };
 
@@ -85,4 +85,4 @@ let browserData={
 //Doing the Exports
 //=============================================
 
-export{isIOS, browserData}
+export{isIOS, simulationData}
