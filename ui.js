@@ -13,7 +13,7 @@ import {
 //=============================================
 
 //NONE HERE
-import{simulationData} from "./setup/simulationData.js";
+ import{simulationData} from "./setup/simulationData.js";
 import{setInitialCondition} from "./main.js";
 
 //=============================================
@@ -44,7 +44,7 @@ let ui = {
     is3D:true,
     simulationSpeed:simulationData.simSpeed,
     showPhase:false,
-    potentialType:2,
+    potentialType:5,
     momentum:0.5,
 };
 
@@ -68,6 +68,7 @@ function createUI() {
             'DoubleSlit':2,
             'PotentialBarrier':3,
             'EllipticalBilliards':4,
+            'Scattering': 5
         }
         ).name('Style');
 

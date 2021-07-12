@@ -171,6 +171,35 @@ float sdEllipse( vec2 p, in vec2 ab )
 }
 
 
+// Create multiple copies of an object - http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
+vec2 opRepLim( in vec2 p, in float s, in vec2 lima, in vec2 limb )
+{
+    return p-s*clamp(round(p/s),lima,limb);
+}
+
+
+// Create infinite copies of an object -  http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
+vec2 opRep( in vec2 p, in float s )
+{
+    return mod(p+s*0.5,s)-s*0.5;
+}
+
+// http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
+float opIntersection( float d1, float d2 )
+{
+    return max(d1,d2);
+}
+
+// http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
+float sdBox( in vec2 p, in vec2 b )
+{
+    vec2 q = abs(p) - b;
+    return min(max(q.x,q.y),0.0) + length(max(q,0.0));
+}
+
+
+
+
 
 
 

@@ -55,7 +55,23 @@ if(potentialType==1){
                  return sdEllipse( uv,  ab)>0.;
  }
 
-    else return false;
+ else if(potentialType==5){
+
+     vec2 p=toUV(ij);
+     vec2 q = (p*24.0 - vec2(10.0,0.0));
+     vec2 r = opRepLim(q,1.25,vec2(-8,-8),vec2(3,8));
+
+//
+//     vec2 q = 2.*(p*24.0 - vec2(5.0,0.0));
+//     vec2 r = opRepLim(q,1.25,vec2(-8,-20),vec2(3,20));
+     return (length(r) -  0.2)<0.;
+
+
+ }
+    else {
+
+     return false;
+ }
 
 }
 
@@ -78,7 +94,7 @@ float PotentialE(ivec2 ij){
         return 50000.;
             }
         //otherwise, inpenetrable wall
-        return 500000.;
+        return 100000.;
     }
 
     //otherwise in free space

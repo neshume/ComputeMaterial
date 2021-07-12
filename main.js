@@ -16,9 +16,6 @@ import Stats from './lib/stats.module.js';
 
 import{OrbitControls} from "./lib/OrbitControls.js";
 
-import {Sky} from "./lib/objects/Sky.js"
-
-import {Water} from "./lib/objects/Water.js"
 
 //=============================================
 //Imports from My Code
@@ -54,6 +51,8 @@ import{
 } from './ui.js';
 import {CustomShaderMaterial, TYPES} from "./classes/three-csm.module.js";
 
+import{skyBoxTex} from "./backgroundScene.js";
+
 //=============================================
 //Global Variables Defined in this MAIN
 //=============================================
@@ -64,11 +63,8 @@ let renderer,stats;
 let scene;
 let controls;
 let customMat;
-let customGeom;
-let standardMat;
-let sun;
 let pmremGenerator;
-let water;
+
 
 //=============================================
 //Functions used in Main Rendering Loop
@@ -125,6 +121,11 @@ function displayResultToScreen(is3D){
 }
 
 
+function updateComputeUniforms(material){
+    material.uniforms.frameNumber.value+=1.;
+    material.uniforms.potentialType.value=ui.potentialType;
+}
+
 
 function animate(){
 
@@ -139,14 +140,16 @@ function animate(){
     displayResultToScreen(ui.is3D);
 
 
+    updateComputeUniforms(realPart.material);
+    updateComputeUniforms(imgPart.material);
     //update compute uniforms
-    realPart.material.uniforms.frameNumber.value+=1.;
-    realPart.material.uniforms.potentialType.value=ui.potentialType;
-
-
-    imgPart.material.uniforms.frameNumber.value+=1.;
-    imgPart.material.uniforms.potentialType.value=ui.potentialType;
-
+    // realPart.material.uniforms.frameNumber.value+=1.;
+    // realPart.material.uniforms.potentialType.value=ui.potentialType;
+    //
+    //
+    // imgPart.material.uniforms.frameNumber.value+=1.;
+    // imgPart.material.uniforms.potentialType.value=ui.potentialType;
+    //
 
 
 
@@ -160,37 +163,6 @@ function animate(){
 
 
 
-
-
-function skyBoxTex(){
-    let bkgScene=new THREE.Scene();
-
-    //add the sky and stuff to this scene
-    sun = new THREE.Vector3();
-
-    const sky = new Sky();
-    sky.scale.setScalar( 4500000 );
-   bkgScene.add( sky );
-
-    const skyUniforms = sky.material.uniforms;
-
-    skyUniforms[ 'turbidity' ].value = 10;
-    skyUniforms[ 'rayleigh' ].value = 2;
-    skyUniforms[ 'mieCoefficient' ].value = 0.005;
-    skyUniforms[ 'mieDirectionalG' ].value = 0.8;
-
-        const phi = THREE.MathUtils.degToRad( 83 );
-        const theta = THREE.MathUtils.degToRad(200 );
-
-        sun.setFromSphericalCoords( 1, phi, theta );
-
-        sky.material.uniforms[ 'sunPosition' ].value.copy( sun );
-
-        const lightMap=pmremGenerator.fromScene( sky ).texture;
-       // bkgScene.environment=lightMap;
-        return lightMap;
-
-}
 
 
 //=============================================
@@ -269,7 +241,7 @@ buildAllShaders().then((code)=>{
     //make the main scene using this material:
     scene=buildMainScene(customMat);
 
-    const skyBox=skyBoxTex();
+    const skyBox=skyBoxTex(pmremGenerator);
     scene.background=skyBox;
     scene.environment=skyBox;
     customMat.envMap=skyBox;
