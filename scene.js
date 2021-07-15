@@ -49,19 +49,13 @@ let water;
 
 function buildMainScene(customMat){
 
+
     let scene = new THREE.Scene();
     //
     // normal light
     let directionalLight = new THREE.DirectionalLight(0xffffff, 1.);
     directionalLight.position.set(10, 10, 10);
     scene.add(directionalLight);
-    //
-    // const light = new THREE.AmbientLight(0x404040); // soft white light
-    // scene.add(light);
-    //
-    // const dlight = new THREE.DirectionalLight(0xffffff);
-    // dlight.position.set(5, 5, 5);
-    // scene.add(dlight);
 
 
     const resX=simulationData.computeRes[0];
@@ -72,10 +66,17 @@ function buildMainScene(customMat){
     mesh.name='plane';
     scene.add(mesh);
 
+
     return scene;
 }
 
 
+
+function updateSceneBackground(scene,bkg){
+    //set the skybox
+    scene.background=bkg;
+    scene.environment=bkg;
+}
 
 
 let camera=new THREE.PerspectiveCamera(
@@ -96,5 +97,6 @@ camera.position.set(0,3, 5);
 //=============================================
 
 export{
-    buildMainScene,camera
+    buildMainScene,camera,
+    updateSceneBackground
 };

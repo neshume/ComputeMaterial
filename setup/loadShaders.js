@@ -8,12 +8,6 @@ import * as THREE from "../lib/three.module.js";
 //Imports from My Code
 //=============================================
 
-import{
-    computeShaderData,
-    materialShaderData
-} from "./locateShaders.js";
-
-
 //=============================================
 //Internal Things Defined in this File
 //=============================================
@@ -93,32 +87,7 @@ async function loadShadersCSM(shaders, chunks) {
 
 
 
-/**
- * This function builds all the shaders which are used in our program
- * We run this as the very first thing, and wait for it to complete before doing more
- * This is achieved by buildAllShaders().then((code =>{REST OF PROGRAM}); in main.js
- * @returns {Promise<{}>}
- */
 
-async function buildAllShaders(){
-
-    let code={};
-
-    //build the shaders for computation
-    code.computeRealPart = await assembleShaderCode(computeShaderData.realPart);
-    code.computeImgPart = await assembleShaderCode(computeShaderData.imgPart);
-    code.computeIniCond = await assembleShaderCode(computeShaderData.iniCond);
-
-    //build the shaders for the material
-    code.matFragment = await assembleShaderCode(materialShaderData.fragment);
-    code.matVertex = await loadShadersCSM(materialShaderData.vertex,null);
-
-    //include the uniforms
-    code.matUniforms=materialShaderData.uniforms;
-    code.computeUniforms=computeShaderData.uniforms;
-
-    return code;
-}
 
 
 
@@ -131,4 +100,4 @@ async function buildAllShaders(){
 //Doing the Exports
 //=============================================
 
-export {buildAllShaders};
+export {assembleShaderCode,loadShadersCSM};

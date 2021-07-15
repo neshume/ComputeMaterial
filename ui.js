@@ -14,8 +14,8 @@ import {
 
 //NONE HERE
  import{simulationData} from "./setup/simulationData.js";
-import{setInitialCondition} from "./main.js";
-
+import{setInitialCondition} from "./compute/setupComputation.js";
+import{reset} from "./main.js";
 //=============================================
 //Internal Variables Defined in this File
 //=============================================
@@ -23,13 +23,15 @@ import{setInitialCondition} from "./main.js";
 //NONE HERE
 
 
+let updateSun = false;
 
+function requestUpdate(){
+    updateSun=true;
+}
 
-
-
-
-
-
+function updateComplete(){
+    updateSun=false;
+}
 
 
 //=============================================
@@ -46,6 +48,7 @@ let ui = {
     showPhase:false,
     potentialType:5,
     momentum:0.5,
+    sunHeight:83,
 };
 
 
@@ -62,7 +65,10 @@ function createUI() {
     mainMenu.add(ui, 'AboutThis').name("Help/About");
     let mom= mainMenu.add(ui,'momentum',0,1,0.01);
     mainMenu.add(ui,'simulationSpeed',1,10,1);
-    mainMenu.add(ui,'showPhase');
+
+    mainMenu.add(ui,'showPhase').name('Phase');
+    mainMenu.add(ui,'is3D').name('3D');
+
     let pot = mainMenu.add(ui,'potentialType', {
             'ParticleBox':1,
             'DoubleSlit':2,
@@ -70,13 +76,13 @@ function createUI() {
             'EllipticalBilliards':4,
             'Scattering': 5
         }
-        ).name('Style');
+        ).name('Potential');
 
-    pot.onChange(setInitialCondition);
-    // mainMenu.add(ui,'is3D',{'3D':true,"2D":false}).name('Style');
+    pot.onChange(reset);
+    mom.onChange(reset);
 
-    mom.onChange(setInitialCondition);
-
+    let sunController = mainMenu.add(ui,'sunHeight',75,90,0.1).name('Sun Height');
+    sunController.onChange(requestUpdate);
 
     mainMenu.close();
 }
@@ -93,5 +99,7 @@ function createUI() {
 
 export {
     ui,
-    createUI
+    createUI,
+    updateSun,
+    updateComplete,
 };

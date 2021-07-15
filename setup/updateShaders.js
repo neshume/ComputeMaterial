@@ -39,7 +39,8 @@ function updateUIUniforms(material){
 
     //update the ui properties
     for (const key in material.uniforms) {
-        if(ui[`${key}`]!=undefined) {//if the thing exists in the UI
+        if(ui[`${key}`]!=undefined &&  material.uniforms[`${key}`].value != undefined) {
+            //if the thing exists in the UI and is a material uniform
             material.uniforms[`${key}`].value = ui[`${key}`];
         }
     }

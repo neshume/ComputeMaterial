@@ -72,7 +72,7 @@ function swapRTs(RT){
 //=============================================
 
 
-function createComputeEnvironment(res, dataType, shaderCode, shaderUniforms){
+function createComputeInstance(res, dataType, shaderCode, shaderUniforms){
     //return an object containing all the info required to run a compute scene
     //the scene itself, the camera, two render targets
 
@@ -118,7 +118,7 @@ function createComputeEnvironment(res, dataType, shaderCode, shaderUniforms){
 //this is almost EXACTLY THE SAME FUNCTION AS ABOVE
 //and it can be used anywhere that one can
 //the only differences are the render target settings
-function createDisplayEnvironment(res, dataType, shaderCode, shaderUniforms){
+function createDisplayInstance(res, dataType, shaderCode, shaderUniforms){
     //return an object containing all the info required to run a compute scene
     //the scene itself, the camera, two render targets
 
@@ -212,7 +212,7 @@ function renderToScreen(compEnv,renderer){
 
 export{
     renderToScreen,
-    createComputeEnvironment,
-    createDisplayEnvironment,
+    createComputeInstance,
+    createDisplayInstance,
     updateUniforms,
     doComputation};

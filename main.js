@@ -12,10 +12,6 @@
 
 import * as THREE from "./lib/three.module.js";
 
-import Stats from './lib/stats.module.js';
-
-import{OrbitControls} from "./lib/OrbitControls.js";
-
 
 //=============================================
 //Imports from My Code
@@ -27,17 +23,25 @@ import{
 } from "./setup/simulationData.js";
 
 import{
-    buildAllShaders
-} from "./setup/loadShaders.js";
+    buildComputeShaders,
+    buildComputeEnvironment,
+    setInitialCondition,
+    computeNextTimeStep,
+    updateComputeUniforms
+} from "./compute/setupComputation.js";
+
+import{
+    buildDisplayShaders
+} from "./material/setupMaterial.js";
 
 import {
-    createComputeEnvironment,
-    createDisplayEnvironment,
+    createDisplayInstance,
     renderToScreen,doComputation
-} from "./classes/computeEnvironment.js";
+} from "./classes/computeInstance.js";
 
 import{
    buildMainScene,
+    updateSceneBackground,
     camera
 } from "./scene.js";
 
@@ -47,84 +51,113 @@ import{
 
 import{
     ui,
-    createUI
+    createUI,
+    updateSun,
+    updateComplete
 } from './ui.js';
+
 import {CustomShaderMaterial, TYPES} from "./classes/three-csm.module.js";
 
-import{skyBoxTex} from "./backgroundScene.js";
+import{buildBackground,getBackgroundTex} from "./backgroundScene.js";
+
+import {
+    createRenderer,
+    createStats,
+    createControls,
+    createPmremGenerator,
+    locateCanvas
+} from "./components.js";
 
 //=============================================
 //Global Variables Defined in this MAIN
 //=============================================
 
-let realPart,imgPart,iniCond;
 let displayScene;
 let renderer,stats;
 let scene;
 let controls;
 let customMat;
 let pmremGenerator;
-
+let compute;
+let canvas;
+let skyScene;
+let skyTex;
 
 //=============================================
 //Functions used in Main Rendering Loop
 //=============================================
 
-function setInitialCondition(){
-    iniCond.material.uniforms.momentum.value=ui.momentum;
-    //run the initial condition shader first
-    doComputation(iniCond,renderer);
-    updateComputeTexture(iniCond.tex);
+
+//reset the scene:
+//uses global variables compute and renderer instead of passing them as arguments
+//because I don't know how to do this correctly:
+//I want to use this in ui.js when onChange is called
+function reset(){
+    setInitialCondition(compute,renderer);
 }
 
 
-function updateComputeTexture(tex){
-    realPart.material.uniforms.tex.value=tex;
-    imgPart.material.uniforms.tex.value=tex;
-    displayScene.material.uniforms.tex.value=tex;
-    customMat.uniforms.tex.value=tex;
+
+//MOVE THIS TO ANOTHER FILE LATER!
+function createDisplayEnvironment(display){
+    displayScene=createDisplayInstance(
+        simulationData.computeRes,simulationData.dataType,display.matFragment,display.matUniforms
+    );
+
+    //build the custom material
+    customMat = new CustomShaderMaterial({
+        baseMaterial: TYPES.PHYSICAL,
+        vShader: display.matVertex,
+        uniforms: display.matUniforms,
+        passthrough: {
+            side:THREE.DoubleSide,
+            envMapIntensity:5.,
+            wireframe: false,
+            metalness: 0,
+            roughness: 0.2,
+        },
+    });
+    //for some reason the constructor is not completing the uniforms correctly.
+    //hard to know if its doing the material correctly either?!
+    customMat.uniforms=display.matUniforms;
 }
 
 
-function computeNextTimeStep(numIterates){
-    //do the computation numIterates of time steps
-    for(let i=0;i<numIterates;i++) {
 
-        doComputation(realPart, renderer);
-        updateComputeTexture(realPart.tex);
+let display3D = function(){
+    //do another computation to get material texture
+    doComputation(displayScene,renderer);
 
-        doComputation(imgPart, renderer);
-        updateComputeTexture(imgPart.tex);
+    //update the material's texture map with this:
+    customMat.map=displayScene.tex;
+
+    //update the sky if necessary
+    if(updateSun){
+        skyTex=getBackgroundTex(skyScene,pmremGenerator);
+        updateSceneBackground(scene,skyTex);
+        updateComplete();
     }
+
+    //now render this to the display
+    renderer.setRenderTarget(null);
+    renderer.render(scene,camera);
+}
+
+
+let display2D = function(){
+    renderToScreen(displayScene,renderer);
 }
 
 
 
-//show the result of the computation
-function displayResultToScreen(is3D){
-  //  if(is3D===true){
-        //do another computation to get material texture
-        doComputation(displayScene,renderer);
-
-        //update the material's texture map with this:
-        customMat.map=displayScene.tex;
-        //standardMat.map=displayScene.tex;
-
-        //now render this to the display
-        renderer.setRenderTarget(null);
-        renderer.render(scene,camera);
-  //  }
-    // else{
-    //     //render material texture directly to the screen
-    //     renderToScreen(displayScene,renderer);
-    // }
-}
 
 
-function updateComputeUniforms(material){
-    material.uniforms.frameNumber.value+=1.;
-    material.uniforms.potentialType.value=ui.potentialType;
-}
+
+
+//=============================================
+//The Animation Loop
+//=============================================
+
 
 
 function animate(){
@@ -134,24 +167,22 @@ function animate(){
     requestAnimationFrame(animate);
 
     //do the computation evolving the wave function
-    computeNextTimeStep(ui.simulationSpeed);
+    computeNextTimeStep(compute, renderer, ui.simulationSpeed);
+
+    //set the display texture from this:
+    displayScene.material.uniforms.tex.value=compute.tex;
+    customMat.uniforms.tex.value=compute.tex;
 
     //now that the computation is done: decide how to draw it
-    displayResultToScreen(ui.is3D);
+    if(ui.is3D){
+        display3D();
+    }
+    else{
+        display2D();
+    }
 
-
-    updateComputeUniforms(realPart.material);
-    updateComputeUniforms(imgPart.material);
-    //update compute uniforms
-    // realPart.material.uniforms.frameNumber.value+=1.;
-    // realPart.material.uniforms.potentialType.value=ui.potentialType;
-    //
-    //
-    // imgPart.material.uniforms.frameNumber.value+=1.;
-    // imgPart.material.uniforms.potentialType.value=ui.potentialType;
-    //
-
-
+    //update the compute uniforms
+    updateComputeUniforms(compute);
 
     //update material uniforms
     updateUIUniforms(displayScene.material);
@@ -170,91 +201,41 @@ function animate(){
 //=============================================
 
 
-buildAllShaders().then((code)=>{
+buildComputeShaders().then((code)=>{
+    buildDisplayShaders().then((display)=>{
 
-   const canvas =document.querySelector('#c');
+        //set up the canvas
+        canvas = locateCanvas();
 
-    var panelType = (typeof type !== 'undefined' && type) && (!isNaN(type)) ? parseInt(type) : 0;
-     stats = new Stats();
-    stats.showPanel(panelType); // 0: fps, 1: ms, 2: mb, 3+: custom
-    document.body.appendChild(stats.dom);
+        //create all the components
+        createUI();
+        stats = createStats();
+        renderer=createRenderer(canvas);
+        pmremGenerator=createPmremGenerator(renderer);
+        controls = createControls(camera,renderer);
 
+        //set up the computation environment
+        compute=buildComputeEnvironment(code);
 
-    createUI();
-
-    renderer = new THREE.WebGLRenderer({
-        canvas,
-        alpha: true,
-        depth: false,
-        stencil: false
-    });
-    //renderer.outputEncoding = THREE.LinearEncoding;
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-
-    //make the pmrem generator if we need it
-    pmremGenerator = new THREE.PMREMGenerator(renderer);
-    pmremGenerator.compileCubemapShader();
+        //set up the display environment
+        createDisplayEnvironment(display);
 
 
-    controls = new OrbitControls(camera, renderer.domElement);
+        //build the main scene using this material:
+        skyScene=buildBackground();
+        skyTex = getBackgroundTex(skyScene,pmremGenerator);
+        scene=buildMainScene(customMat);
+        updateSceneBackground(scene,skyTex);
 
-    //make compute environments for the computation
-    realPart=createComputeEnvironment(
-        simulationData.computeRes,simulationData.dataType,code.computeRealPart,code.computeUniforms
-    );
+        //run the initial condition shader first
+        setInitialCondition(compute,renderer);
 
-    imgPart=createComputeEnvironment(
-        simulationData.computeRes,simulationData.dataType,code.computeImgPart,code.computeUniforms
-    );
-
-    iniCond=createComputeEnvironment(
-        simulationData.computeRes,simulationData.dataType,code.computeIniCond,code.computeUniforms
-    );
-
-
-    displayScene=createDisplayEnvironment(
-        simulationData.computeRes,simulationData.dataType,code.matFragment,code.matUniforms
-    );
-
-
-
-
-    //build the custom material
-    customMat = new CustomShaderMaterial({
-        baseMaterial: TYPES.PHYSICAL,
-        vShader: code.matVertex,
-        uniforms: code.matUniforms,
-        passthrough: {
-            side:THREE.DoubleSide,
-            envMapIntensity:5.,
-            wireframe: false,
-            metalness: 0,
-            roughness: 0.2,
-        },
-    });
-    //for some reason the constructor is not completing the uniforms correctly.
-    //hard to know if its doing the material correctly either?!
-    customMat.uniforms=code.matUniforms;
-
-
-    //make the main scene using this material:
-    scene=buildMainScene(customMat);
-
-    const skyBox=skyBoxTex(pmremGenerator);
-    scene.background=skyBox;
-    scene.environment=skyBox;
-    customMat.envMap=skyBox;
-
-
-
-    //run the initial condition shader first
-    doComputation(iniCond,renderer);
-    updateComputeTexture(iniCond.tex);
-
-
-    //now with the initial condition set, run the animation loop
-    animate();
+        //now with the initial condition set, run the animation loop
+        animate();
+})
 });
 
-export{setInitialCondition};
+
+
+
+export{reset};
