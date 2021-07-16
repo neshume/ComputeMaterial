@@ -30,7 +30,7 @@ vec2 initialCondition(ivec2 ij){
 //return vec2(0);
     vec2 uv=toUV(ij);
     float len=length(uv);
-    float val=3.*exp(-100.*len*len);
+    float val=3.*exp(-1000.*len*len);
     return vec2(val,val);
 }
 

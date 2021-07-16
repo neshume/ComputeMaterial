@@ -10,7 +10,7 @@ bool outerBoundary(ivec2 ij){
 }
 
 bool inObstacle(ivec2 ij){
-    return false;
+    //return false;
 
 if(potentialType==1){
     return outerBoundary(ij);
@@ -89,12 +89,7 @@ float PotentialE(ivec2 ij){
     vec2 uv=toUV(ij);
 
     if(inObstacle(ij)){
-        if(potentialType==3 && !outerBoundary(ij)){
-        //a smaller barrier for the internal one
-        return 50.;
-            }
-        //otherwise, inpenetrable wall
-        return 100.;
+        return 2.;
     }
 
     //otherwise in free space

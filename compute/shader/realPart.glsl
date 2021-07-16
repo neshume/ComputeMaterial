@@ -13,6 +13,7 @@ float newReal(ivec2 ij){
 
     //get potential energy
     float n=PotentialE(ij);
+    float c2=1./(n*n);
 
     //get laplacian:
     float[9] samples=current_Field(ij);
@@ -20,7 +21,7 @@ float newReal(ivec2 ij){
     float Lap=constructLaplacian(stencil,samples);
 
     //return the updated real part
-    return 2.*cur-prev+Lap;
+    return 2.*cur-prev+c2*Lap;
 }
 
 
@@ -44,8 +45,7 @@ void compute( out vec4 fragColor, in ivec2 ij)
 
     float obs=0.;
     if(inObstacle(ij)){
-       fragColor= vec4(0,0,0,0);
-        return;
+       obs=1.;
     }
 
 

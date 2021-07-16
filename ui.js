@@ -46,7 +46,7 @@ let ui = {
     is3D:true,
     simulationSpeed:simulationData.simSpeed,
     showPhase:false,
-    potentialType:5,
+    potentialType:1,
     momentum:0.5,
     sunHeight:83,
 };
@@ -66,7 +66,7 @@ function createUI() {
     let mom= mainMenu.add(ui,'momentum',0,1,0.01);
     mainMenu.add(ui,'simulationSpeed',1,10,1);
 
-    mainMenu.add(ui,'showPhase').name('Phase');
+    mainMenu.add(ui,'showPhase').name('HeightMap');
     mainMenu.add(ui,'is3D').name('3D');
 
     let pot = mainMenu.add(ui,'potentialType', {
