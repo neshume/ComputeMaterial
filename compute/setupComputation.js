@@ -28,7 +28,7 @@ async function buildComputeShaders(){
 
     //build the shaders for computation
     code.computeRealPart = await assembleShaderCode(computeShaderData.realPart);
-    code.computeImgPart = await assembleShaderCode(computeShaderData.imgPart);
+    // code.computeImgPart = await assembleShaderCode(computeShaderData.imgPart);
     code.computeIniCond = await assembleShaderCode(computeShaderData.iniCond);
 
     //include the uniforms
@@ -47,9 +47,9 @@ function buildComputeEnvironment(code){
         simulationData.computeRes,simulationData.dataType,code.computeRealPart,code.computeUniforms
     );
 
-    const imgPart=createComputeInstance(
-        simulationData.computeRes,simulationData.dataType,code.computeImgPart,code.computeUniforms
-    );
+    // const imgPart=createComputeInstance(
+    //     simulationData.computeRes,simulationData.dataType,code.computeImgPart,code.computeUniforms
+    // );
 
 
     const iniCond=createComputeInstance(
@@ -60,7 +60,7 @@ function buildComputeEnvironment(code){
     return {
         tex: undefined,
         realPart:realPart,
-        imgPart:imgPart,
+        //imgPart:imgPart,
         iniCond:iniCond,
     }
 }
@@ -105,8 +105,8 @@ function computeNextTimeStep(compEnv,renderer,numIterates){
         doComputation(compEnv.realPart, renderer);
         updateComputeTexture(compEnv,compEnv.realPart.tex);
 
-        doComputation(compEnv.imgPart, renderer);
-        updateComputeTexture(compEnv,compEnv.imgPart.tex);
+        // doComputation(compEnv.imgPart, renderer);
+        // updateComputeTexture(compEnv,compEnv.imgPart.tex);
     }
 }
 

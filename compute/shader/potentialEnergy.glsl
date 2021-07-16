@@ -91,15 +91,31 @@ float PotentialE(ivec2 ij){
     if(inObstacle(ij)){
         if(potentialType==3 && !outerBoundary(ij)){
         //a smaller barrier for the internal one
-        return 50000.;
+        return 50.;
             }
         //otherwise, inpenetrable wall
-        return 100000.;
+        return 100.;
     }
 
     //otherwise in free space
-    return 0.;
+    return 1.;
 
 }
 
+
+
+
+
+
+bool atSource(ivec2 ij){
+    return false;
+    vec2 uv=toUV(ij);
+    return length(uv)<0.1;
+}
+
+
+float source(ivec2 ij, float time){
+    float len=length(toUV(ij));
+    return 0.05*sin(time);
+}
 

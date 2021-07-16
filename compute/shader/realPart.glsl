@@ -8,19 +8,19 @@
 
 float newReal(ivec2 ij){
 
-    float re = Real(ij);
-    float img = Imaginary(ij);
+    float cur = Current(ij);
+    float prev = Previous(ij);
 
     //get potential energy
-    float V=PotentialE(ij);
+    float n=PotentialE(ij);
 
     //get laplacian:
-    float[9] samples=I_Field(ij);
+    float[9] samples=current_Field(ij);
     float[9] stencil=chooseStencil(ij);
-    float LapI=constructLaplacian(stencil,samples);
+    float Lap=constructLaplacian(stencil,samples);
 
     //return the updated real part
-    return re  +  dt * V * img  -  0.5 * dt * LapI;
+    return 2.*cur-prev+Lap;
 }
 
 
@@ -37,6 +37,11 @@ void compute( out vec4 fragColor, in ivec2 ij)
         return;
     }
 
+    if(atSource(ij)){
+        fragColor=vec4(source(ij,frameNumber/100.),Current(ij),0,1.);
+        return;
+    }
+
     float obs=0.;
     if(inObstacle(ij)){
         obs=1.;
@@ -44,15 +49,13 @@ void compute( out vec4 fragColor, in ivec2 ij)
 
 
     //else: we leave the imaginary part untouched, and update the real part;
-    float re = Real(ij);
-    float img = Imaginary(ij);
+    float cur = Current(ij);
+    float prev = Previous(ij);
 
     float updatedReal = newReal(ij);
 
-    float mag2 = re*updatedReal+img*img;
-
     //return real, imaginary, probability
-    fragColor=vec4(updatedReal,img,mag2,obs);
+    fragColor=vec4(updatedReal,cur, prev,obs);
 }
 
 //--calling the main function of the shader

@@ -44,14 +44,14 @@ const realPartPaths = {
     potentialEnergy: './compute/shader/potentialEnergy.glsl',
     realPart: './compute/shader/realPart.glsl',
 };
-
-const imgPartPaths = {
-    uniforms:  './compute/shader/uniforms.glsl',
-    common: './compute/shader/common.glsl',
-    laplacian: './compute/shader/laplacian.glsl',
-    potentialEnergy: './compute/shader/potentialEnergy.glsl',
-    imgPart: './compute/shader/imgPart.glsl',
-};
+//
+// const imgPartPaths = {
+//     uniforms:  './compute/shader/uniforms.glsl',
+//     common: './compute/shader/common.glsl',
+//     laplacian: './compute/shader/laplacian.glsl',
+//     potentialEnergy: './compute/shader/potentialEnergy.glsl',
+//     imgPart: './compute/shader/imgPart.glsl',
+// };
 
 const initialConditionPaths = {
     uniforms:  './compute/shader/uniforms.glsl',
@@ -71,7 +71,7 @@ const initialConditionPaths = {
 const computeShaderData={
     uniforms:computeUniforms,
     realPart:realPartPaths,
-    imgPart:imgPartPaths,
+   // imgPart:imgPartPaths,
     iniCond:initialConditionPaths,
 };
 

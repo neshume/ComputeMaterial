@@ -31,10 +31,9 @@ vec3 displace(vec3 params){
    // ivec2 ij=getIJ(params.xy);
     vec2 uv=params.xy+vec2(0.5);
 
-    //access the probability for that pixel
-    float h=texture2D(tex,uv).z;
-   //float h=texelFetch(tex,ij,0).z;
-    //float h=texture2D(tex,params.xy).z;
+    //access the current pressure at that pixel
+    float h=texture2D(tex,uv).x;
+
 
     //offset plane in y direction by this probability
     return vec3(-pos.x,2.*h,-pos.y);

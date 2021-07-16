@@ -132,11 +132,11 @@ float constructLaplacian(float[9] stencil, float[9] samples) {
 
 
 //to take the real Laplacian
-float[9] R_Field( ivec2 ij ) {
+float[9] current_Field( ivec2 ij ) {
     float[9] field;
     for (int i = 0; i < 9; i++) {
         ivec2 r = ij + grid[i];
-        field[i] = Real(r);
+        field[i] = Current(r);
     }
     return field;
 }
@@ -144,11 +144,11 @@ float[9] R_Field( ivec2 ij ) {
 
 
 //to take the imaginary Laplacian
-float[9] I_Field( ivec2 ij ) {
+float[9] previous_Field( ivec2 ij ) {
     float[9] field;
     for (int i = 0; i < 9; i++) {
         ivec2 r = ij + grid[i];
-        field[i] = Imaginary(r);
+        field[i] = Previous(r);
     }
     return field;
 }

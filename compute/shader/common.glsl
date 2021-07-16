@@ -19,25 +19,25 @@ void setTimeSteps(){
 //ACCESSING THE COMPUTE TEXTURE
 //-------------------------------------------------
 
+//
+//vec2 psi(ivec2 ij){
+//    return texelFetch(tex, ij, 0).xy;
+//}
 
-vec2 psi(ivec2 ij){
-    return texelFetch(tex, ij, 0).xy;
-}
 
-
-float Real(ivec2 ij){
+float Current(ivec2 ij){
     return texelFetch(tex, ij, 0).x;
 }
 
 
-float Imaginary(ivec2 ij){
+float Previous(ivec2 ij){
     return texelFetch(tex, ij, 0).y;
 }
 
-
-float probability(ivec2 ij){
-    return texelFetch(tex, ij, 0).z;
-}
+//
+//float probability(ivec2 ij){
+//    return texelFetch(tex, ij, 0).z;
+//}
 
 
 

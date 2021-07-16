@@ -9,15 +9,15 @@
 
 //this needs to be updated: its just the wavepacket at TIME ZERO
 //NEED HALF DT TIMESTEP
-vec2 wavePacket(vec2 uv, float scale, vec2 iniPos,vec2 iniMom){
-
-    vec2 relPos=scale*(uv-iniPos);
-
-    float mag=exp(-dot(relPos,relPos));
-    float phase=dot(relPos,iniMom);
-
-    return mag*vec2(cos(phase),sin(phase));
-}
+//vec2 wavePacket(vec2 uv, float scale, vec2 iniPos,vec2 iniMom){
+//
+//    vec2 relPos=scale*(uv-iniPos);
+//
+//    float mag=exp(-dot(relPos,relPos));
+//    float phase=dot(relPos,iniMom);
+//
+//    return mag*vec2(cos(phase),sin(phase));
+//}
 
 
 
@@ -29,21 +29,14 @@ vec2 wavePacket(vec2 uv, float scale, vec2 iniPos,vec2 iniMom){
 vec2 initialCondition(ivec2 ij){
 
     vec2 uv=toUV(ij);
-//
-//        vec2 psi0=3.*wavePacket(uv,20.,vec2(0),vec2(0));
-//        return psi0;
-
-    vec2 psi1=wavePacket(uv,10.,vec2(-0.4,0),33.*momentum*vec2(1,0));
-
-
-    //vec2 psi1=wavePacket(uv,30.,vec2(-0.3,0),20.*momentum*vec2(1,0));
-
-
-    // vec2 psi2=wavePacket(uv,20.,vec2(0.4,0.4),2.*vec2(-1,-0.6));
-    // vec2 psi3=wavePacket(uv,30.,vec2(0.0,0),-2.*vec2(1,0.1));
- return psi1;
-    //return psi1+psi2+psi3;
+    float len=length(uv);
+    //return vec2(0.);
+    float val=3.*exp(-100.*len*len);
+    return vec2(val,val);
 }
+
+
+
 
 
 
