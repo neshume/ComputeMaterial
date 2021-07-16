@@ -27,7 +27,7 @@ async function buildComputeShaders(){
     let code={};
 
     //build the shaders for computation
-    code.computeRealPart = await assembleShaderCode(computeShaderData.realPart);
+    code.computeWaveEqn = await assembleShaderCode(computeShaderData.waveEqn);
     // code.computeImgPart = await assembleShaderCode(computeShaderData.imgPart);
     code.computeIniCond = await assembleShaderCode(computeShaderData.iniCond);
 
@@ -43,13 +43,9 @@ async function buildComputeShaders(){
 
 function buildComputeEnvironment(code){
     //make compute environments for the computation
-    const realPart=createComputeInstance(
-        simulationData.computeRes,simulationData.dataType,code.computeRealPart,code.computeUniforms
+    const waveEqn=createComputeInstance(
+        simulationData.computeRes,simulationData.dataType,code.computeWaveEqn,code.computeUniforms
     );
-
-    // const imgPart=createComputeInstance(
-    //     simulationData.computeRes,simulationData.dataType,code.computeImgPart,code.computeUniforms
-    // );
 
 
     const iniCond=createComputeInstance(
@@ -59,8 +55,7 @@ function buildComputeEnvironment(code){
 
     return {
         tex: undefined,
-        realPart:realPart,
-        //imgPart:imgPart,
+        waveEqn:waveEqn,
         iniCond:iniCond,
     }
 }
@@ -102,11 +97,9 @@ function computeNextTimeStep(compEnv,renderer,numIterates){
     //do the computation numIterates of time steps
     for(let i=0;i<numIterates;i++) {
 
-        doComputation(compEnv.realPart, renderer);
-        updateComputeTexture(compEnv,compEnv.realPart.tex);
+        doComputation(compEnv.waveEqn, renderer);
+        updateComputeTexture(compEnv,compEnv.waveEqn.tex);
 
-        // doComputation(compEnv.imgPart, renderer);
-        // updateComputeTexture(compEnv,compEnv.imgPart.tex);
     }
 }
 

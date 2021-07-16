@@ -37,21 +37,15 @@ let computeUniforms={
 
 
 
-const realPartPaths = {
+const waveEqnPaths = {
     uniforms:  './compute/shader/uniforms.glsl',
     common: './compute/shader/common.glsl',
     laplacian: './compute/shader/laplacian.glsl',
-    potentialEnergy: './compute/shader/potentialEnergy.glsl',
-    realPart: './compute/shader/realPart.glsl',
+    ior: './compute/shader/ior.glsl',
+    source: './compute/shader/source.glsl',
+    wave: './compute/shader/wave.glsl',
 };
-//
-// const imgPartPaths = {
-//     uniforms:  './compute/shader/uniforms.glsl',
-//     common: './compute/shader/common.glsl',
-//     laplacian: './compute/shader/laplacian.glsl',
-//     potentialEnergy: './compute/shader/potentialEnergy.glsl',
-//     imgPart: './compute/shader/imgPart.glsl',
-// };
+
 
 const initialConditionPaths = {
     uniforms:  './compute/shader/uniforms.glsl',
@@ -70,8 +64,7 @@ const initialConditionPaths = {
 
 const computeShaderData={
     uniforms:computeUniforms,
-    realPart:realPartPaths,
-   // imgPart:imgPartPaths,
+    waveEqn:waveEqnPaths,
     iniCond:initialConditionPaths,
 };
 

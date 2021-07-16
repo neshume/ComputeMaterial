@@ -12,8 +12,7 @@ float newReal(ivec2 ij){
     float prev = Previous(ij);
 
     //get potential energy
-    float n=PotentialE(ij);
-    float c2=1./(n*n);
+    float n=ior(ij);
 
     //get laplacian:
     float[9] samples=current_Field(ij);
@@ -21,7 +20,7 @@ float newReal(ivec2 ij){
     float Lap=constructLaplacian(stencil,samples);
 
     //return the updated real part
-    return 2.*cur-prev+c2*Lap;
+    return 2.*cur-prev+Lap/n;
 }
 
 

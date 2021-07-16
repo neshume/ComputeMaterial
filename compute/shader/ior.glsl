@@ -9,6 +9,9 @@ bool outerBoundary(ivec2 ij){
     return (rel.x<0.005||rel.x>0.995||rel.y<0.005||rel.y>0.495);
 }
 
+
+
+
 bool inObstacle(ivec2 ij){
     //return false;
 
@@ -85,7 +88,7 @@ if(potentialType==1){
 //what is the potential energy, as a function of position?
 //-------------------------------------------------
 
-float PotentialE(ivec2 ij){
+float ior(ivec2 ij){
     vec2 uv=toUV(ij);
 
     if(inObstacle(ij)){
@@ -101,16 +104,4 @@ float PotentialE(ivec2 ij){
 
 
 
-
-bool atSource(ivec2 ij){
-    return false;
-    vec2 uv=toUV(ij);
-    return length(uv)<0.1;
-}
-
-
-float source(ivec2 ij, float time){
-    float len=length(toUV(ij));
-    return 0.5*sin(time);
-}
 
