@@ -135,6 +135,7 @@ let display3D = function(){
     if(updateSun){
         skyTex=getBackgroundTex(skyScene,pmremGenerator);
         updateSceneBackground(scene,skyTex);
+        //this sets updateSun back to "false"
         updateComplete();
     }
 
@@ -171,7 +172,7 @@ function animate(){
 
     //set the display texture from this:
     displayScene.material.uniforms.tex.value=compute.tex;
-    customMat.uniforms.tex.value=compute.tex;
+    //customMat.uniforms.tex.value=compute.tex;
 
     //now that the computation is done: decide how to draw it
     if(ui.is3D){
@@ -186,7 +187,7 @@ function animate(){
 
     //update material uniforms
     updateUIUniforms(displayScene.material);
-    updateUIUniforms(customMat);
+    //updateUIUniforms(customMat);
 
 
     stats.end();
