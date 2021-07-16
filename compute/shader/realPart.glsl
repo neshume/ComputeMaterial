@@ -38,13 +38,14 @@ void compute( out vec4 fragColor, in ivec2 ij)
     }
 
     if(atSource(ij)){
-        fragColor=vec4(source(ij,frameNumber/100.),Current(ij),0,1.);
+        fragColor=vec4(source(ij,frameNumber/10.),source(ij,frameNumber/10.),0,1.);
         return;
     }
 
     float obs=0.;
     if(inObstacle(ij)){
-        obs=1.;
+       fragColor= vec4(0,0,0,0);
+        return;
     }
 
 
@@ -55,7 +56,7 @@ void compute( out vec4 fragColor, in ivec2 ij)
     float updatedReal = newReal(ij);
 
     //return real, imaginary, probability
-    fragColor=vec4(updatedReal,cur, prev,obs);
+    fragColor=vec4(updatedReal,cur, 0,obs);
 }
 
 //--calling the main function of the shader

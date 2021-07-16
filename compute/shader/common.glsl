@@ -19,11 +19,6 @@ void setTimeSteps(){
 //ACCESSING THE COMPUTE TEXTURE
 //-------------------------------------------------
 
-//
-//vec2 psi(ivec2 ij){
-//    return texelFetch(tex, ij, 0).xy;
-//}
-
 
 float Current(ivec2 ij){
     return texelFetch(tex, ij, 0).x;
@@ -33,12 +28,6 @@ float Current(ivec2 ij){
 float Previous(ivec2 ij){
     return texelFetch(tex, ij, 0).y;
 }
-
-//
-//float probability(ivec2 ij){
-//    return texelFetch(tex, ij, 0).z;
-//}
-
 
 
 //-------------------------------------------------
@@ -56,51 +45,6 @@ vec2 toUV(ivec2 ij){
 ivec2 toIJ(vec2 uv){
     return ivec2(res.y*uv+res/2.);
 }
-
-
-
-
-//-------------------------------------------------
-//WORKING WITH COMPLEX NUMBERS
-//-------------------------------------------------
-
-
-//addition is normal
-//scaling is normal
-//multiplication:
-vec2 mult(vec2 p, vec2 q){
-    float x=p.x;
-    float y=p.y;
-    float u=q.x;
-    float v=q.y;
-
-    float real = x*u-y*v;
-    float im = x*v+ y*u;
-
-    return vec2(real, im);
-}
-
-
-//multiplicative inverse of complex number
-vec2 inv(vec2 p){
-    return vec2(p.x,-p.y)/dot(p,p);
-}
-
-//complex exponential
-vec2 expC(vec2 z){
-    return exp(z.x)*vec2(cos(z.y),sin(z.y));
-}
-
-
-
-//complex square root
-vec2 sqrtC(vec2 z){
-    float r=length(z);
-    float theta=atan(z.y,z.x);
-
-    return sqrt(r)*vec2(cos(theta/2.),sin(theta/2.));
-}
-
 
 
 

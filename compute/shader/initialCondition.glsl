@@ -27,10 +27,9 @@
 //this initial condition gives R(0) as first entry
 //and I(0.5dt) as the second entry
 vec2 initialCondition(ivec2 ij){
-
+//return vec2(0);
     vec2 uv=toUV(ij);
     float len=length(uv);
-    //return vec2(0.);
     float val=3.*exp(-100.*len*len);
     return vec2(val,val);
 }

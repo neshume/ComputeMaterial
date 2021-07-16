@@ -127,7 +127,8 @@ float constructLaplacian(float[9] stencil, float[9] samples) {
     for (int i=0; i<9; i++) {
         sum += stencil[i] * samples[i];
     }
-    return sum/(dx*dx);
+    //DO NOT DIVIDE BY DX2
+    return sum;
 }
 
 

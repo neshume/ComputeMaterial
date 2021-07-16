@@ -36,7 +36,7 @@ vec3 displace(vec3 params){
 
 
     //offset plane in y direction by this probability
-    return vec3(-pos.x,2.*h,-pos.y);
+    return vec3(-pos.x,h,-pos.y);
 
 }
 

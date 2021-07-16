@@ -10,7 +10,7 @@ bool outerBoundary(ivec2 ij){
 }
 
 bool inObstacle(ivec2 ij){
-  //  return false;
+    return false;
 
 if(potentialType==1){
     return outerBoundary(ij);
@@ -116,6 +116,6 @@ bool atSource(ivec2 ij){
 
 float source(ivec2 ij, float time){
     float len=length(toUV(ij));
-    return 0.05*sin(time);
+    return 0.5*sin(time);
 }
 
