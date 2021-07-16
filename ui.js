@@ -48,6 +48,7 @@ let ui = {
     showPhase:false,
     potentialType:1,
     momentum:0.5,
+    dissipation:0.,
     sunHeight:83,
 };
 
@@ -63,7 +64,8 @@ function createUI() {
     mainMenu.domElement.style.userSelect = 'none';
 
     mainMenu.add(ui, 'AboutThis').name("Help/About");
-    let mom= mainMenu.add(ui,'momentum',0,1,0.01);
+    let mom= mainMenu.add(ui,'momentum',0.1,1,0.01).name("Wavepacket Spread");
+    mainMenu.add(ui,'dissipation',0.,1,0.01).name("Dissipation");
     mainMenu.add(ui,'simulationSpeed',1,10,1);
 
     mainMenu.add(ui,'showPhase').name('HeightMap');
@@ -72,7 +74,7 @@ function createUI() {
     let pot = mainMenu.add(ui,'potentialType', {
             'ParticleBox':1,
             'DoubleSlit':2,
-            'PotentialBarrier':3,
+            'Glass':3,
             'EllipticalBilliards':4,
             'Scattering': 5
         }

@@ -80,6 +80,7 @@ function updateComputeUniforms(compEnv){
         if(compEnv[`${key}`].material!=undefined) {
             compEnv[`${key}`].material.uniforms.frameNumber.value += 1;
             compEnv[`${key}`].material.uniforms.potentialType.value = ui.potentialType;
+            compEnv[`${key}`].material.uniforms.dissipation.value = ui.dissipation;
         }
     }
 }

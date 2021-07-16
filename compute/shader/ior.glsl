@@ -42,12 +42,15 @@ if(potentialType==1){
 }
 
     else if(potentialType==3){
-             vec2 uv=toUV(ij);
-             float thickness=0.02;
-             vec2 a1=vec2(0.2,-0.5);
-             vec2 b1=vec2(0.2,0.5);
-             float d1=line_segment(uv,a1,b1)-thickness;
-             return d1<0.||outerBoundary(ij);
+
+     vec2 uv=toUV(ij);
+     return uv.x>0.2;
+//             vec2 uv=toUV(ij);
+//             float thickness=0.02;
+//             vec2 a1=vec2(0.2,-0.5);
+//             vec2 b1=vec2(0.2,0.5);
+//             float d1=line_segment(uv,a1,b1)-thickness;
+//             return d1<0.||outerBoundary(ij);
 
 }
 
@@ -61,7 +64,7 @@ if(potentialType==1){
  else if(potentialType==5){
 
      vec2 p=toUV(ij);
-     vec2 q = (p*24.0 - vec2(10.0,0.0));
+     vec2 q = (p*24.0 - vec2(20.0,0.0));
      vec2 r = opRepLim(q,1.25,vec2(-8,-8),vec2(3,8));
 
 //
@@ -92,7 +95,7 @@ float ior(ivec2 ij){
     vec2 uv=toUV(ij);
 
     if(inObstacle(ij)){
-        return 2.;
+        return 4.;
     }
 
     //otherwise in free space

@@ -27,10 +27,19 @@
 //this initial condition gives R(0) as first entry
 //and I(0.5dt) as the second entry
 vec2 initialCondition(ivec2 ij){
-//return vec2(0);
+
+    //a strip
+//    vec2 uv=toUV(ij);
+//    float x=uv.x;
+//    float val=3.*exp(-1000.*x*x);
+//    return vec2(val,val);
+
+
+    //a gaussian
     vec2 uv=toUV(ij);
     float len=length(uv);
-    float val=3.*exp(-1000.*len*len);
+    float width=momentum*momentum;
+    float val=3.*exp(-2000.*width*len*len);
     return vec2(val,val);
 }
 

@@ -32,6 +32,9 @@ let computeUniforms={
     },
     momentum:{
         value:ui.momentum
+    },
+    dissipation:{
+        value:ui.dissipation
     }
 };
 

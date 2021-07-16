@@ -20,7 +20,9 @@ float newReal(ivec2 ij){
     float Lap=constructLaplacian(stencil,samples);
 
     //return the updated real part
-    return 2.*cur-prev+Lap/n;
+    float new = 2.*cur-prev+Lap/n;
+
+    return (1.-0.01*dissipation)*new;
 }
 
 
@@ -45,6 +47,11 @@ void compute( out vec4 fragColor, in ivec2 ij)
     float obs=0.;
     if(inObstacle(ij)){
        obs=1.;
+        if(potentialType!=3){//the glass
+            //or just kill it with boundary condition
+            fragColor=vec4(0, 0, 0, 1);
+            return;
+        }
     }
 
 
