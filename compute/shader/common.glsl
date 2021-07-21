@@ -7,9 +7,11 @@
 
 float dt,dx;
 
+float PI=3.14159265;
+
 void setTimeSteps(){
     dx=1./max(res.x,res.y);
-    dt=0.8*dx*dx;
+    dt=0.5*dx*dx;
 }
 
 

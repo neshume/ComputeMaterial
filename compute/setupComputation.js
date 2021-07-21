@@ -92,6 +92,7 @@ function updateComputeUniforms(compEnv){
 
 function setInitialCondition(compEnv,renderer){
     compEnv.iniCond.material.uniforms.momentum.value=ui.momentum;
+    compEnv.iniCond.material.uniforms.spread.value=ui.spread;
     //run the initial condition shader first
     doComputation(compEnv.iniCond,renderer);
     updateComputeTexture(compEnv,compEnv.iniCond.tex);

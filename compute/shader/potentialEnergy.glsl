@@ -94,7 +94,7 @@ float PotentialE(ivec2 ij){
         return 50000.;
             }
         //otherwise, inpenetrable wall
-        return 100000.;
+        return 500000.;
     }
 
     //otherwise in free space

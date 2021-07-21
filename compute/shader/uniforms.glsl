@@ -7,3 +7,4 @@ uniform float frameNumber;
 uniform sampler2D tex;
 uniform int potentialType;
 uniform float momentum;
+uniform float spread;
