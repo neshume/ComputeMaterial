@@ -29,18 +29,23 @@
 vec2 initialCondition(ivec2 ij){
 
     //a strip
-//    vec2 uv=toUV(ij);
-//    float x=uv.x;
-//    float val=3.*exp(-1000.*x*x);
-//    return vec2(val,val);
+    vec2 uv=toUV(ij);
+    float x=uv.x-0.2;
+    float y=uv.y;
+    float v=1.;
+    float dir0= x + 0.2*y;
+    float dir2 = x - 0.2*y;
+    float wave1 = -10000.*dir0*dir0-100.*dir2*dir2;
+    float val1= exp(wave1);
+    return vec2(val1,val1);
 
 
     //a gaussian
-    vec2 uv=toUV(ij);
-    float len=length(uv);
-    float width=momentum*momentum;
-    float val=3.*exp(-2000.*width*len*len);
-    return vec2(val,val);
+//    vec2 uv=toUV(ij);
+//    float len=length(uv);
+//    float width=momentum*momentum;
+//    float val=3.*exp(-2000.*width*len*len);
+//    return vec2(val,val);
 }
 
 

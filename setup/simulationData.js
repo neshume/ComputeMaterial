@@ -81,7 +81,8 @@ function isIOS() {
 
 let simulationData={
     displayRes:[window.innerWidth,window.innerHeight],
-    computeRes:setComputeRes([1024,512]),
+    computeRes:setComputeRes([2048,1024]),
+   // computeRes:setComputeRes([1024,512]),
     dataType: setDataType(),
     simSpeed:setSimSpeed(),
 };
